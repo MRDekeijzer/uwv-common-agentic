@@ -25,13 +25,11 @@ Installeren zonder CLI is ook mogelijk. Een skill is een map: kopieer `skills/<n
 ## Catalogus
 
 <!-- catalog:start -->
-
-| Skill                                     | Waarvoor                                                                                                                | Status    |
-| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------- |
-| [`create-pr`](skills/create-pr/SKILL.md) | Open een draft pull request op basis van het PR-sjabloon van de repository, gevuld met de commits op de huidige branch. | supported |
-| [`grill-me`](skills/grill-me/SKILL.md)   | Start op eigen initiatief een grilling-sessie met /grill-me; het model stelt dit nooit zelf voor.                       | supported |
-| [`grilling`](skills/grilling/SKILL.md)   | Bevraag een plan of ontwerp kritisch voordat het gebouwd wordt, met één vraag per keer.                               | supported |
-
+| Skill | Waarvoor | Status |
+| --- | --- | --- |
+| [`create-pr`](skills/create-pr/SKILL.md) | Open een draft pull request op basis van het PR-template van de repository, gevuld met de commits op de huidige branch. | supported |
+| [`grill-me`](skills/grill-me/SKILL.md) | Start op eigen initiatief een grilling-sessie met /grill-me; het model stelt dit nooit zelf voor. | supported |
+| [`grilling`](skills/grilling/SKILL.md) | Bevraag een plan of ontwerp kritisch voordat het gebouwd wordt, met één vraag per keer. | supported |
 <!-- catalog:end -->
 
 De tabel wordt gegenereerd door `scripts/validate_skills.py` en mag niet met de hand worden

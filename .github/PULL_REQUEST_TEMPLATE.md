@@ -28,5 +28,5 @@ Waarom die skill dit geval niet afdekt:
 
 ## Controles
 
-- [ ] `python3 scripts/validate_skills.py` geeft lokaal 0 terug
-- [ ] Ik heb deze skill minstens eenmaal in de praktijk gebruikt en beschrijf de uitkomst hieronder
+- [ ] `python3 scripts/validate_skills.py` geeft lokaal 'ok' terug
+- [ ] Ik heb deze skill minstens eenmaal in de praktijk gebruikt

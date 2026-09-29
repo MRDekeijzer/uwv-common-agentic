@@ -2,7 +2,7 @@
 name: create-pr
 description: Create a GitHub Pull Request using the repository's PR template, filled in based on committed changes on the current branch. Use when the user says "create a PR", "open a PR", "make a pull request", "submit PR", or "create pull request". Asks the user about tests before proceeding.
 metadata:
-  use-case: Open een draft pull request op basis van het PR-sjabloon van de repository, gevuld met de commits op de huidige branch.
+  use-case: Open een draft pull request op basis van het PR-template van de repository, gevuld met de commits op de huidige branch.
   owner: '@MRDekeijzer'
   status: supported
 ---
