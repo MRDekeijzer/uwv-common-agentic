@@ -1,16 +1,21 @@
 # Bijdragen aan de registry
 
-Elke pull request voegt één skill toe, als één map: `skills/<naam>/SKILL.md`. De documentatie
-staat in de frontmatter en in de verplichte secties van diezelfde `SKILL.md`, niet in een
-apart bestand. Daardoor wordt de documentatie samen met de skill geïnstalleerd en kan zij
-niet van de skill gaan afwijken.
+Elke pull request voegt één skill toe en bestaat uit twee bestanden:
 
-De documentatie in deze repository is Nederlands. De inhoud van een skill mag Engels zijn.
+- `skills/<naam>/SKILL.md`, met de frontmatter en de instructies die het agent-harnas leest.
+- `docs/<naam>.md`, met de Nederlandse uitleg voor collega's.
 
-## De vier eisen
+De registry richt zich op GitHub Copilot. Omdat de skills de agent-skills-conventie volgen,
+werken ze ook in andere harnassen.
 
-Een pull request wordt alleen gemerged wanneer aan alle vier de eisen is voldaan. Het PR-sjabloon
-vraagt hier in dezelfde volgorde naar.
+De `SKILL.md` mag Engels zijn, omdat dat voor het model doorgaans beter werkt. De uitleg in
+`docs/` is Nederlands, conform UWV-beleid. Die uitleg beschrijft wanneer een collega de skill
+moet gebruiken; de `SKILL.md` beschrijft wanneer de agent hem moet laden.
+
+## De vijf eisen
+
+Een pull request wordt alleen gemerged wanneer aan alle vijf de eisen is voldaan. Het
+PR-sjabloon vraagt hier in dezelfde volgorde naar.
 
 ### 1. Er bestaat nog geen skill die dit doet
 
@@ -39,14 +44,14 @@ ziet op het moment dat hij besluit jouw skill te laden. Formuleer het als een tr
 plaats van als een samenvatting, en gebruik de woorden die een gebruiker daadwerkelijk zou
 typen. De minimumlengte is 40 tekens; kortere waarden wijst de validator af.
 
-### 3. Je benoemt voor welke projecten de skill nuttig is
+### 3. Je benoemt voor welke projecten de skill van pas komt
 
 `metadata.projects` is een niet-lege lijst met concrete contexten, bijvoorbeeld
 `[python-backends, azure-data-pipelines, react-frontends]`. Zijn er geen twee te noemen, dan
 is de skill vermoedelijk persoonlijk in plaats van gemeenschappelijk. Bewaar hem in dat geval
-in je eigen `~/.claude/skills`.
+in je eigen `~/.agents/skills/`.
 
-### 4. De documentatie staat in de SKILL.md
+### 4. De verplichte secties staan in de SKILL.md
 
 Twee secties zijn verplicht en worden door CI gecontroleerd:
 
@@ -56,6 +61,20 @@ Twee secties zijn verplicht en worden door CI gecontroleerd:
 
 De koppen zijn Engels omdat een skill zelf Engels mag zijn; de tekst eronder mag Nederlands
 zijn.
+
+### 5. Er is een Nederlandse uitleg in docs/
+
+Bij elke skill hoort een `docs/<naam>.md` met dezelfde naam als de map in `skills/`. De map
+`docs/` is daarmee een spiegel van `skills/`. CI controleert dat het bestand bestaat, dat er
+geen uitleg achterblijft zonder skill, en dat twee secties aanwezig zijn:
+
+- `## Wanneer gebruiken`: de situaties waarin een collega deze skill pakt.
+- `## Wanneer niet gebruiken`: de gevallen waarin iets anders beter past, met een verwijzing
+  naar dat alternatief.
+
+Deze uitleg is bedoeld voor iemand die de skill nog nooit heeft gebruikt en de `SKILL.md` niet
+gaat lezen. Schrijf hem daarom in het Nederlands en zonder termen die alleen binnen jouw team
+gangbaar zijn.
 
 ## Het SKILL.md-contract
 
@@ -84,8 +103,35 @@ Stappen, commando's, voorbeelden.
 
 `npx skills init <naam>` genereert een startsjabloon; vul dat aan met het `metadata:`-blok.
 
+## Het docs-contract
+
+```markdown
+# mijn-skill
+
+Eén regel over wat de skill doet.
+
+## Wanneer gebruiken
+...
+
+## Wanneer niet gebruiken
+...
+
+## Wat de skill doet
+Wat de agent achtereenvolgens doet, en wat hij aan de gebruiker vraagt.
+```
+
+## Indeling van een bijdrage
+
+```
+skills/mijn-skill/
+  SKILL.md        # frontmatter, When to use, When not to use, How it works
+  <overig>        # scripts, templates, naslag; wordt samen met de skill geïnstalleerd
+docs/mijn-skill.md  # Nederlandse uitleg, Wanneer gebruiken, Wanneer niet gebruiken
+```
+
 Alles wat de skill verder nodig heeft, zoals scripts, naslag en templates, plaats je in
-dezelfde map naast `SKILL.md`. Die bestanden worden samen met de skill geïnstalleerd.
+`skills/<naam>/` naast `SKILL.md`. Die bestanden worden samen met de skill geïnstalleerd. De
+uitleg in `docs/` wordt niet meegeïnstalleerd en blijft in de repository.
 
 ## Werkwijze: trunk-based
 
@@ -121,8 +167,9 @@ python3 scripts/validate_skills.py         # moet 0 teruggeven; dezelfde control
 ```
 
 De validator controleert de mechanische regels: naamgeving, verplichte metadata, verplichte
-secties en een actuele catalogus. De review gaat daarmee alleen nog over de inhoudelijke
-afweging, namelijk of dit een duplicaat is en of de use case reëel is.
+secties in `SKILL.md` en in `docs/<naam>.md`, en een actuele catalogus. De review gaat daarmee
+alleen nog over de inhoudelijke afweging, namelijk of dit een duplicaat is en of de use case
+reëel is.
 
 ## Review
 
@@ -134,9 +181,10 @@ Een skill wordt gemerged met `status: experimental`. Zet de status in een volgen
 op `supported` zodra de skill in een echt project is gebruikt. Dat is het moment om te
 verhelpen wat dat eerste gebruik aan het licht heeft gebracht.
 
-Voor uitfaseren geldt: zet `status: deprecated`, beschrijf in `## When not to use` welk
-alternatief gebruikt moet worden, en laat de skill nog een kwartaal staan voordat je hem
-verwijdert.
+Voor uitfaseren geldt: zet `status: deprecated`, beschrijf in `## When not to use` en in
+`## Wanneer niet gebruiken` welk alternatief gebruikt moet worden, en laat de skill nog een
+kwartaal staan voordat je hem verwijdert. Verwijder bij het opruimen ook `docs/<naam>.md`,
+omdat CI een achtergebleven uitleg afkeurt.
 
 ## Repo-instellingen (alleen beheerders)
 

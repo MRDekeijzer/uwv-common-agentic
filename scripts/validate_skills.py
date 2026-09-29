@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Controleert skills/ tegen het registry-contract en werkt de catalogus in README.md bij.
+"""Controleert skills/ en docs/ tegen het registry-contract en werkt de catalogus in README.md bij.
 
 Gebruik:
   python3 scripts/validate_skills.py          # controleren (zoals CI; stopt met 1 bij problemen)
@@ -14,10 +14,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS = ROOT / "skills"
 README = ROOT / "README.md"
+DOCS = ROOT / "docs"
 START, END = "<!-- catalog:start -->", "<!-- catalog:end -->"
 
 REQUIRED_META = ("use-case", "projects", "owner", "status")
 REQUIRED_HEADINGS = ("## When to use", "## When not to use")
+REQUIRED_DOC_HEADINGS = ("## Wanneer gebruiken", "## Wanneer niet gebruiken")
 STATUSES = {"experimental", "supported", "deprecated"}
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 EMPTY_CATALOG = "_Nog geen skills._"
@@ -95,11 +97,22 @@ def check_skill(path):
     return name, desc, meta, problems
 
 
+def check_doc(path, name):
+    """Return [problems] for the Dutch docs/<name>.md that belongs to a skill."""
+    if not path.is_file():
+        return [f"docs/{name}.md ontbreekt; elke skill heeft een Nederlandse uitleg in docs/"]
+    text = path.read_text()
+    return [f"docs/{name}.md: verplichte sectie '{h}' ontbreekt"
+            for h in REQUIRED_DOC_HEADINGS
+            if not re.search(rf"^{re.escape(h)}\s*$", text, re.M)]
+
+
 def collect():
     skills, problems = [], []
     if not SKILLS.is_dir():
         return skills, ["de map skills/ bestaat niet"]
     for d in sorted(p for p in SKILLS.iterdir() if p.is_dir() and not p.name.startswith(".")):
+        problems += check_doc(DOCS / f"{d.name}.md", d.name)
         f = d / "SKILL.md"
         if not f.is_file():
             problems.append(f"{d.relative_to(ROOT)}/: geen SKILL.md")
@@ -108,17 +121,19 @@ def collect():
         problems += [f"skills/{d.name}/SKILL.md: {e}" for e in errs]
         if not errs:
             skills.append((name, desc, meta))
+    for doc in sorted(DOCS.glob("*.md")) if DOCS.is_dir() else []:
+        if not (SKILLS / doc.stem / "SKILL.md").is_file():
+            problems.append(f"docs/{doc.name} hoort bij geen skill in skills/")
     return skills, problems
 
 
 def render_catalog(skills):
     if not skills:
         return EMPTY_CATALOG
-    rows = ["| Skill | Waarvoor | Nuttig in | Status |", "| --- | --- | --- | --- |"]
+    rows = ["| Skill | Waarvoor | Status |", "| --- | --- | --- |"]
     for name, _, meta in skills:
-        projects = ", ".join(meta.get("projects") or [])
         rows.append(
-            f"| [`{name}`](skills/{name}/SKILL.md) | {meta.get('use-case', '')} | {projects} | {meta.get('status', '')} |"
+            f"| [`{name}`](skills/{name}/SKILL.md) | {meta.get('use-case', '')} | {meta.get('status', '')} |"
         )
     return "\n".join(rows)
 
@@ -147,7 +162,11 @@ def selftest():
             pass
         else:
             raise AssertionError(f"had afgewezen moeten worden: {bad!r}")
+    assert check_doc(Path("nergens/x.md"), "x") == ["docs/x.md ontbreekt; elke skill heeft een Nederlandse uitleg in docs/"]
     assert render_catalog([]) == EMPTY_CATALOG
+    one = render_catalog([("s", "d", {"use-case": "Doet iets.", "projects": ["alleen-hier"], "status": "supported"})])
+    assert one.splitlines()[0].count("|") == 4, one          # Skill | Waarvoor | Status
+    assert "alleen-hier" not in one, one                     # projects staan niet in de catalogus
     assert apply_catalog(f"a{START}old{END}b", "new") == f"a{START}\nnew\n{END}b"
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -168,6 +187,12 @@ def selftest():
             "  owner: '@me'\n  status: supported\n---\n\n## When to use\nx\n\n## When not to use\ny\n"
         )
         assert check_skill(good)[3] == [], check_skill(good)[3]
+
+        doc = Path(tmp) / "good-skill.md"
+        doc.write_text("# good-skill\n\n## Wanneer gebruiken\nx\n")
+        assert [p for p in check_doc(doc, "good-skill") if "Wanneer niet gebruiken" in p]
+        doc.write_text("# good-skill\n\n## Wanneer gebruiken\nx\n\n## Wanneer niet gebruiken\ny\n")
+        assert check_doc(doc, "good-skill") == [], check_doc(doc, "good-skill")
     print("zelftest ok")
 
 
