@@ -34,6 +34,9 @@ Liever zonder CLI? Een skill is niet meer dan een map: kopieer `skills/<naam>/` 
 <!-- catalog:start -->
 | Skill | Waarvoor | Nuttig in | Status |
 | --- | --- | --- | --- |
+| [`create-pr-from-template`](skills/create-pr-from-template/SKILL.md) | Open een pull request die het PR-sjabloon van de repo zelf gebruikt, gevuld vanuit de commits op je branch. | elk-github-project, repos-met-pr-sjabloon, uwv-common-agentic | supported |
+| [`grill-me`](skills/grill-me/SKILL.md) | Start zelf een grilling-sessie met /grill-me, zonder te wachten tot het model het voorstelt. | elk-project, architectuurbesluiten, plan-review | supported |
+| [`grilling`](skills/grilling/SKILL.md) | Een plan of ontwerp aan stukken vragen voordat je het bouwt, één vraag per keer. | elk-project, architectuurbesluiten, plan-review | supported |
 | [`skill-authoring`](skills/skill-authoring/SKILL.md) | Schrijf een SKILL.md die aan het registry-contract voldoet, en bepaal of een nieuwe skill überhaupt nodig is. | uwv-common-agentic, any-claude-code-project, agent-tooling | experimental |
 <!-- catalog:end -->
 

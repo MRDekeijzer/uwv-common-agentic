@@ -40,6 +40,10 @@ def parse_frontmatter(text):
             raise ValueError(f"geen 'sleutel: waarde'-regel: {raw.strip()!r}")
         key, _, value = raw.strip().partition(":")
         key, value = key.strip(), value.strip()
+        if value in (">", "|", ">-", "|-"):
+            raise ValueError(
+                f"{key!r} gebruikt een YAML-blok ({value}); zet de waarde op één regel achter de dubbele punt"
+            )
         if indented:
             if section is None:
                 raise ValueError(f"ingesprongen sleutel {key!r} heeft geen bovenliggende sleutel")
@@ -135,7 +139,8 @@ def selftest():
     assert front["metadata"]["projects"] == ["p", "q"], front
     assert front["metadata"]["owner"] == "@me", front
     assert body.strip() == "## When to use", body
-    for bad in ("no frontmatter", "---\nname: a\n", "---\nnot-a-mapping\n---\n"):
+    for bad in ("no frontmatter", "---\nname: a\n", "---\nnot-a-mapping\n---\n",
+                "---\ndescription: >\n  meerdere regels\n---\n"):
         try:
             parse_frontmatter(bad)
         except ValueError:
