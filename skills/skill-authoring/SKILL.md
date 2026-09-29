@@ -2,7 +2,7 @@
 name: skill-authoring
 description: Use when writing, reviewing, or splitting a skill for the uwv-common-agentic registry, or when someone asks "should this be a skill", "write a SKILL.md", "add this to the registry", or why a skill is not triggering. Covers the frontmatter contract, writing descriptions that actually fire, and the duplicate check.
 metadata:
-  use-case: Schrijf een SKILL.md die aan het registry-contract voldoet, en bepaal of een nieuwe skill überhaupt nodig is.
+  use-case: Schrijf een SKILL.md die aan het registry-contract voldoet en bepaal of een nieuwe skill nodig is.
   projects: [uwv-common-agentic, any-claude-code-project, agent-tooling]
   owner: '@FrisoHarlaar'
   status: experimental
@@ -62,8 +62,8 @@ sibling file the skill links to, so it is loaded only when actually needed.
 ## Before opening the PR
 
 ```bash
-python3 tools/validate_skills.py --fix   # regenerate the README catalog
-python3 tools/validate_skills.py         # must exit 0
+python3 scripts/validate_skills.py --fix   # regenerate the README catalog
+python3 scripts/validate_skills.py         # must exit 0
 ```
 
 Full contribution rules, including the four merge gates, are in

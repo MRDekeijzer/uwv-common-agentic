@@ -2,7 +2,7 @@
 name: grilling
 description: Grill the user relentlessly about a plan, decision, or idea, one question at a time. Use when the user wants to stress-test their thinking, pressure-test a design, find the holes in a plan before building, or uses any 'grill' trigger phrase.
 metadata:
-  use-case: Een plan of ontwerp aan stukken vragen voordat je het bouwt, één vraag per keer.
+  use-case: Bevraag een plan of ontwerp kritisch voordat het gebouwd wordt, met één vraag per keer.
   projects: [elk-project, architectuurbesluiten, plan-review]
   owner: '@FrisoHarlaar'
   status: supported

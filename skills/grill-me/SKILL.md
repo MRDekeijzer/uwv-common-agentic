@@ -3,7 +3,7 @@ name: grill-me
 description: A relentless interview to sharpen a plan or design. Invoked by the user as /grill-me; it starts a grilling session and is never triggered by the model on its own.
 disable-model-invocation: true
 metadata:
-  use-case: Start zelf een grilling-sessie met /grill-me, zonder te wachten tot het model het voorstelt.
+  use-case: Start op eigen initiatief een grilling-sessie met /grill-me; het model stelt dit nooit zelf voor.
   projects: [elk-project, architectuurbesluiten, plan-review]
   owner: '@FrisoHarlaar'
   status: supported

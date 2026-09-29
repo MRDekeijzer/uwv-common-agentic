@@ -1,72 +1,72 @@
 # Bijdragen aan de registry
 
-Elke pull request voegt **één skill** toe als één map: `skills/<naam>/SKILL.md`.
-De documentatie is geen apart bestand — die staat in de frontmatter en in de verplichte
-secties van diezelfde `SKILL.md`. Zo wordt de documentatie meegeïnstalleerd met de skill
-en kan ze er niet van af gaan drijven.
+Elke pull request voegt één skill toe, als één map: `skills/<naam>/SKILL.md`. De documentatie
+staat in de frontmatter en in de verplichte secties van diezelfde `SKILL.md`, niet in een
+apart bestand. Daardoor wordt de documentatie samen met de skill geïnstalleerd en kan zij
+niet van de skill gaan afwijken.
 
-De documentatie in deze repo is Nederlands. De inhoud van een skill mag Engels zijn.
+De documentatie in deze repository is Nederlands. De inhoud van een skill mag Engels zijn.
 
 ## De vier eisen
 
-Een pull request wordt pas gemerged als alle vier kloppen. Het PR-sjabloon vraagt precies
-hierom, in deze volgorde.
+Een pull request wordt alleen gemerged wanneer aan alle vier de eisen is voldaan. Het PR-sjabloon
+vraagt hier in dezelfde volgorde naar.
 
 ### 1. Er bestaat nog geen skill die dit doet
 
-Kijk dit na vóórdat je iets schrijft:
+Controleer dit voordat je begint met schrijven:
 
 ```bash
-npx skills add MRDekeijzer/uwv-common-agentic --list   # wat deze registry al heeft
-npx skills find <trefwoord>                            # wat er buiten UWV al is
+npx skills add MRDekeijzer/uwv-common-agentic --list   # wat deze registry al bevat
+npx skills find <trefwoord>                            # wat er buiten het UWV al bestaat
 ```
 
-Loop ook de catalogustabel in [README.md](README.md) door. Noem in je pull request de skill
-die er het dichtst bij zit, en leg in één zin uit waarom die jouw geval niet afdekt.
-"Ik heb gekeken en niets gevonden" telt niet — noem de dichtstbijzijnde buur.
+Neem ook de catalogus in [README.md](README.md) door. Noem in je pull request de skill die
+het dichtst bij je geval ligt, en licht in één zin toe waarom die het niet afdekt.
 
-Komt een bestaande skill al voor 80% in de buurt? **Verbeter die skill dan.** Een pull
-request die een bestaande `SKILL.md` aanpast is sneller te reviewen en beter voor gebruikers
-dan een bijna-duplicaat.
+Dekt een bestaande skill je geval al voor ongeveer 80 procent af, verbeter dan die skill. Een
+pull request die een bestaande `SKILL.md` aanpast is sneller te reviewen en voor gebruikers
+beter dan een duplicaat.
 
 ### 2. De use case is duidelijk en staat opgeschreven
 
-`metadata.use-case` is één zin, in de vorm *"<doe wat> wanneer <situatie>"*. Die zin komt
-rechtstreeks in de catalogus in de README, dus schrijf hem in het Nederlands en voor iemand
-die jouw skill nog nooit heeft gezien — ook als de rest van de skill Engels is.
+`metadata.use-case` is één zin in de vorm `<doe wat> wanneer <situatie>`. Deze zin komt
+rechtstreeks in de catalogus in de README terecht. Schrijf hem daarom in het Nederlands en
+voor iemand die de skill nog niet kent, ook wanneer de rest van de skill Engels is.
 
-Het veld `description` is iets anders, en belangrijker: dat is de **enige** tekst die een
-agent ziet bij de beslissing om jouw skill te laden. Schrijf het als een trigger, niet als
-een samenvatting, en gebruik de woorden die een gebruiker echt zou typen. Minimaal 40
-tekens; korter wijst de validator af.
+Het veld `description` is iets anders en weegt zwaarder: het is de enige tekst die een agent
+ziet op het moment dat hij besluit jouw skill te laden. Formuleer het als een trigger in
+plaats van als een samenvatting, en gebruik de woorden die een gebruiker daadwerkelijk zou
+typen. De minimumlengte is 40 tekens; kortere waarden wijst de validator af.
 
-### 3. Je benoemt voor welke projecten het nuttig is
+### 3. Je benoemt voor welke projecten de skill nuttig is
 
 `metadata.projects` is een niet-lege lijst met concrete contexten, bijvoorbeeld
-`[python-backends, azure-data-pipelines, react-frontends]`. Kun je er geen twee noemen, dan
-is de skill waarschijnlijk persoonlijk in plaats van gemeenschappelijk — houd hem dan in je
-eigen `~/.claude/skills`.
+`[python-backends, azure-data-pipelines, react-frontends]`. Zijn er geen twee te noemen, dan
+is de skill vermoedelijk persoonlijk in plaats van gemeenschappelijk. Bewaar hem in dat geval
+in je eigen `~/.claude/skills`.
 
 ### 4. De documentatie staat in de SKILL.md
 
-Twee secties zijn verplicht en CI controleert erop:
+Twee secties zijn verplicht en worden door CI gecontroleerd:
 
-- `## When to use` — de situaties waarin de skill moet aanslaan.
-- `## When not to use` — de grens. Deze sectie houdt de registry bruikbaar bij 50 skills,
-  en het is de sectie die een reviewer als eerste leest.
+- `## When to use`: de situaties waarin de skill moet aanslaan.
+- `## When not to use`: de grens van de skill. Deze sectie houdt de registry bruikbaar bij
+  vijftig skills en wordt door een reviewer als eerste gelezen.
 
-De koppen zijn Engels omdat een skill zelf Engels mag zijn; de tekst eronder mag Nederlands.
+De koppen zijn Engels omdat een skill zelf Engels mag zijn; de tekst eronder mag Nederlands
+zijn.
 
 ## Het SKILL.md-contract
 
 ```markdown
 ---
-name: mijn-skill                    # moet gelijk zijn aan de mapnaam, kebab-case
+name: mijn-skill                    # gelijk aan de mapnaam, kebab-case
 description: Use when <situatie> to <resultaat>. Covers <woorden die een gebruiker typt>.
 metadata:
   use-case: Eén zin voor de catalogus in de README.
   projects: [python-backends, azure-data-pipelines]
-  owner: '@je-github-handle'        # wie je aanspreekt als het stuk gaat
+  owner: '@je-github-handle'        # wie verantwoordelijk is voor onderhoud
   status: experimental              # experimental | supported | deprecated
 ---
 
@@ -82,64 +82,66 @@ metadata:
 Stappen, commando's, voorbeelden.
 ```
 
-`npx skills init <naam>` genereert een startsjabloon; voeg daar het `metadata:`-blok aan toe.
+`npx skills init <naam>` genereert een startsjabloon; vul dat aan met het `metadata:`-blok.
 
-Alles wat de skill verder nodig heeft (scripts, naslag, templates) zet je in dezelfde map
-naast `SKILL.md` en wordt mee geïnstalleerd.
+Alles wat de skill verder nodig heeft, zoals scripts, naslag en templates, plaats je in
+dezelfde map naast `SKILL.md`. Die bestanden worden samen met de skill geïnstalleerd.
 
 ## Werkwijze: trunk-based
 
-We werken trunk-based. `main` is altijd de waarheid en is beschermd: je kunt er alleen via
-een pull request in, en er wordt gesquasht bij het mergen.
+De werkwijze is trunk-based. `main` is de bron van waarheid en is beschermd: wijzigingen komen
+er alleen via een pull request in, en bij het mergen wordt gesquasht.
 
-- Vertak van een actuele `main` en houd de branch kort — uren tot een paar dagen, niet weken.
-- Eén skill per pull request. Klein en vaak mergen is sneller te reviewen dan één grote stapel.
-- Na het mergen wordt je branch verwijderd; haal `main` op en begin opnieuw vanaf daar.
+- Vertak van een actuele `main` en houd de branch kort: uren tot enkele dagen.
+- Eén skill per pull request. Klein en frequent mergen is sneller te reviewen dan één grote
+  wijziging.
+- Na het mergen wordt je branch verwijderd. Haal `main` op en begin daar opnieuw vanaf.
 
 Branch- en PR-namen volgen [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
 feat/<korte-omschrijving>     # nieuwe skill of nieuwe functionaliteit
-fix/<korte-omschrijving>      # herstel van een bestaande skill of tooling
+fix/<korte-omschrijving>      # herstel van een bestaande skill of van tooling
 docs/<korte-omschrijving>     # alleen documentatie
 chore/<korte-omschrijving>    # onderhoud, CI, opruimen
 ```
 
-**Commitberichten en PR-titels zijn Engels**, ook al is de documentatie Nederlands. De
-git-historie leest zo hetzelfde als die van elk ander project, en een skill die we ooit
-buiten UWV delen hoeft niet te worden herschreven.
+Commitberichten en PR-titels zijn Engels, ook al is de documentatie Nederlands. De
+git-historie leest daarmee hetzelfde als die van elk ander project, en een skill die we ooit
+buiten het UWV delen hoeft niet te worden herschreven.
 
-De titel van de pull request is de commitregel die na het squashen in `main` belandt, dus
-schrijf hem in dezelfde vorm: `feat: add skill for alembic migrations`.
+De titel van de pull request is de commitregel die na het squashen in `main` belandt. Schrijf
+hem daarom in dezelfde vorm: `feat: add skill for alembic migrations`.
 
 ## Voordat je de pull request opent
 
 ```bash
-python3 tools/validate_skills.py --fix   # werkt de catalogus in de README bij
-python3 tools/validate_skills.py         # moet 0 teruggeven — dit draait CI ook
+python3 scripts/validate_skills.py --fix   # werkt de catalogus in de README bij
+python3 scripts/validate_skills.py         # moet 0 teruggeven; dezelfde controle als in CI
 ```
 
-De validator controleert de mechanische regels (naamgeving, verplichte metadata, verplichte
-secties, actuele catalogus), zodat de review alleen over de afweging gaat: *is dit een
-duplicaat, en is de use case echt?*
+De validator controleert de mechanische regels: naamgeving, verplichte metadata, verplichte
+secties en een actuele catalogus. De review gaat daarmee alleen nog over de inhoudelijke
+afweging, namelijk of dit een duplicaat is en of de use case reëel is.
 
 ## Review
 
 `@FrisoHarlaar` en `@MRDekeijzer` beheren deze registry en worden via CODEOWNERS automatisch
-als reviewer toegevoegd. Eén goedkeuring is genoeg om te mergen. We streven naar een review
+als reviewer toegevoegd. Eén goedkeuring is voldoende om te mergen. We streven naar een review
 binnen twee werkdagen.
 
-Een skill wordt gemerged met `status: experimental`. Zet hem in een volgende pull request op
-`supported` zodra hij in een echt project is gebruikt — dat is het moment om te repareren wat
-dat eerste echte gebruik aan het licht bracht.
+Een skill wordt gemerged met `status: experimental`. Zet de status in een volgende pull request
+op `supported` zodra de skill in een echt project is gebruikt. Dat is het moment om te
+verhelpen wat dat eerste gebruik aan het licht heeft gebracht.
 
-Uitfaseren: zet `status: deprecated`, schrijf in `## When not to use` wat je in plaats
-daarvan gebruikt, en laat de skill nog een kwartaal staan voordat je hem verwijdert.
+Voor uitfaseren geldt: zet `status: deprecated`, beschrijf in `## When not to use` welk
+alternatief gebruikt moet worden, en laat de skill nog een kwartaal staan voordat je hem
+verwijdert.
 
 ## Repo-instellingen (alleen beheerders)
 
-De trunk-based werkwijze hierboven leunt op instellingen die je één keer zet. Ze vragen
-admin-rechten op de repository. Onderstaande commando's zetten ze allemaal.
+De trunk-based werkwijze hierboven berust op instellingen die eenmalig worden gezet. Daarvoor
+zijn admin-rechten op de repository nodig. De onderstaande commando's zetten ze alle.
 
 Alleen squashen bij het mergen, en de branch daarna opruimen:
 
@@ -153,8 +155,8 @@ gh api -X PATCH repos/MRDekeijzer/uwv-common-agentic \
   -f squash_merge_commit_message=PR_BODY
 ```
 
-`main` beschermen: alleen via een pull request, met een groene `validate` en één
-goedkeuring van een CODEOWNER:
+`main` beschermen, zodat wijzigingen alleen via een pull request binnenkomen, met een groene
+`validate` en één goedkeuring van een CODEOWNER:
 
 ```bash
 gh api -X PUT repos/MRDekeijzer/uwv-common-agentic/branches/main/protection \
@@ -175,12 +177,12 @@ gh api -X PUT repos/MRDekeijzer/uwv-common-agentic/branches/main/protection \
 JSON
 ```
 
-`enforce_admins` staat bewust op `false`: we zijn met twee beheerders, en anders kan er
-niets meer gemerged worden zodra er één afwezig is. `strict: true` betekent dat een branch
-bij moet zijn met `main` voordat er gemerged kan worden — dat hoort bij trunk-based werken
-en is te doen zolang branches kort blijven.
+`enforce_admins` staat bewust op `false`. De registry heeft twee beheerders; met
+`enforce_admins: true` kan er niets meer worden gemerged zodra een van beiden afwezig is.
+`strict: true` betekent dat een branch bij moet zijn met `main` voordat er gemerged kan
+worden. Dat hoort bij trunk-based werken en is haalbaar zolang branches kort blijven.
 
-Controleren of het goed staat:
+De instellingen controleren:
 
 ```bash
 gh api repos/MRDekeijzer/uwv-common-agentic/branches/main/protection --jq '{

@@ -2,7 +2,7 @@
 name: create-pr-from-template
 description: Create a GitHub Pull Request using the repository's PR template, filled in based on committed changes on the current branch. Use when the user says "create a PR", "open a PR", "make a pull request", "submit PR", or "create pull request". Asks the user about tests and changelog before proceeding.
 metadata:
-  use-case: Open een pull request die het PR-sjabloon van de repo zelf gebruikt, gevuld vanuit de commits op je branch.
+  use-case: Open een pull request op basis van het PR-sjabloon van de repository, gevuld met de commits op de huidige branch.
   projects: [elk-github-project, repos-met-pr-sjabloon, uwv-common-agentic]
   owner: '@FrisoHarlaar'
   status: supported
