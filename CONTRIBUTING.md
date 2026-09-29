@@ -10,7 +10,7 @@ werken ze ook in andere harnassen.
 
 De `SKILL.md` mag Engels zijn, omdat dat voor het model doorgaans beter werkt. De uitleg in
 `docs/` is Nederlands, conform UWV-beleid. Die uitleg beschrijft wanneer een collega de skill
-moet gebruiken; de `SKILL.md` beschrijft wanneer de agent hem moet laden.
+kan gebruiken; de `SKILL.md` beschrijft wanneer de agent hem moet laden.
 
 ## De vier eisen
 
@@ -33,7 +33,7 @@ Dekt een bestaande skill je geval al voor ongeveer 80 procent af, verbeter dan d
 pull request die een bestaande `SKILL.md` aanpast is sneller te reviewen en voor gebruikers
 beter dan een duplicaat.
 
-Is de skill alleen voor jou van waarde en niet voor een tweede project, bewaar hem dan in je
+Is de skill alleen voor jou van waarde en niet voor een ander project, bewaar hem dan in je
 eigen `~/.agents/skills/` in plaats van in deze registry.
 
 ### 2. De use case is duidelijk en staat opgeschreven
@@ -52,8 +52,7 @@ typen. De minimumlengte is 40 tekens; kortere waarden wijst de validator af.
 Twee secties zijn verplicht en worden door CI gecontroleerd:
 
 - `## When to use`: de situaties waarin de skill moet aanslaan.
-- `## When not to use`: de grens van de skill. Deze sectie houdt de registry bruikbaar bij
-  vijftig skills en wordt door een reviewer als eerste gelezen.
+- `## When not to use`: de grens van de skill. Deze sectie houdt de registry bruikbaar bij een groeiend aantal skills.
 
 De koppen zijn Engels omdat een skill zelf Engels mag zijn; de tekst eronder mag Nederlands
 zijn.
@@ -65,13 +64,12 @@ Bij elke skill hoort een `docs/<naam>.md` met dezelfde naam als de map in `skill
 niet zo goed als leeg is, en dat er geen uitleg achterblijft zonder skill.
 
 Schrijf een of twee alinea's, geen vertaling van de `SKILL.md`. Beschrijf in welke situatie een
-collega deze skill pakt en hoe hij zich verhoudt tot de andere skills in de registry: welke
+collega deze skill kan gebruiken en hoe hij zich verhoudt tot de andere skills in de registry: welke
 skill je in plaats hiervan gebruikt, of welke erop volgt. Die verwijzingen maken de registry
 navigeerbaar wanneer er vijftig skills in staan.
 
 De uitleg is bedoeld voor iemand die de skill nog nooit heeft gebruikt en de `SKILL.md` niet
-gaat lezen. Schrijf hem daarom in het Nederlands en zonder termen die alleen binnen jouw team
-gangbaar zijn.
+helemaal wilt gaan lezen. Schrijf hem daarom in het Nederlands en zonder termen die alleen binnen jouw team gangbaar zijn.
 
 ## Het SKILL.md-contract
 
@@ -99,7 +97,6 @@ Stappen, commando's, voorbeelden.
 
 `npx skills init <naam>` genereert een startsjabloon; vul dat aan met het `metadata:`-blok.
 
-
 ## Indeling van een bijdrage
 
 ```
@@ -118,9 +115,8 @@ uitleg in `docs/` wordt niet meegeïnstalleerd en blijft in de repository.
 De werkwijze is trunk-based. `main` is de bron van waarheid en is beschermd: wijzigingen komen
 er alleen via een pull request in, en bij het mergen wordt gesquasht.
 
-- Vertak van een actuele `main` en houd de branch kort: uren tot enkele dagen.
-- Eén skill per pull request. Klein en frequent mergen is sneller te reviewen dan één grote
-  wijziging.
+- Eén skill per pull request. Klein en frequent mergen is sneller te reviewen dan één grote wijziging.
+- Maak eventueel een stacked-PR mochten skills afhankelijk zijn van elkaar.
 - Na het mergen wordt je branch verwijderd. Haal `main` op en begin daar opnieuw vanaf.
 
 Branch- en PR-namen volgen [Conventional Commits](https://www.conventionalcommits.org/):
@@ -132,9 +128,8 @@ docs/<korte-omschrijving>     # alleen documentatie
 chore/<korte-omschrijving>    # onderhoud, CI, opruimen
 ```
 
-Commitberichten en PR-titels zijn Engels, ook al is de documentatie Nederlands. De
-git-historie leest daarmee hetzelfde als die van elk ander project, en een skill die we ooit
-buiten het UWV delen hoeft niet te worden herschreven.
+Commit-messages en PR-titels zijn Engels, ook al is de documentatie Nederlands. De
+git-historie leest daarmee hetzelfde als die van elk ander project.
 
 De titel van de pull request is de commitregel die na het squashen in `main` belandt. Schrijf
 hem daarom in dezelfde vorm: `feat: add skill for alembic migrations`.
@@ -147,15 +142,14 @@ python3 scripts/validate_skills.py         # moet 0 teruggeven; dezelfde control
 ```
 
 De validator controleert de mechanische regels: naamgeving, verplichte metadata, verplichte
-secties in `SKILL.md`, de aanwezigheid van `docs/<naam>.md`, en een actuele catalogus. De review gaat daarmee
-alleen nog over de inhoudelijke afweging, namelijk of dit een duplicaat is en of de use case
+secties in `SKILL.md`, de aanwezigheid van `docs/<naam>.md`, en een actuele catalogus. De review gaat daarmee alleen nog over de inhoudelijke afweging, namelijk of dit een duplicaat is en of de use case
 reëel is.
 
 ## Review
 
-`@FrisoHarlaar` en `@MRDekeijzer` beheren deze registry en worden via CODEOWNERS automatisch
+`@MRDekeijzer` en `@FrisoHarlaar` beheren deze registry en worden via CODEOWNERS automatisch
 als reviewer toegevoegd. Eén goedkeuring is voldoende om te mergen. We streven naar een review
-binnen twee werkdagen.
+binnen een week.
 
 Een skill wordt gemerged met `status: experimental`. Zet de status in een volgende pull request
 op `supported` zodra de skill in een echt project is gebruikt. Dat is het moment om te
@@ -165,57 +159,3 @@ Voor uitfaseren geldt: zet `status: deprecated`, beschrijf in `## When not to us
 `docs/<naam>.md` welk alternatief gebruikt moet worden, en laat de skill nog een kwartaal staan
 voordat je hem verwijdert. Verwijder bij het opruimen ook `docs/<naam>.md`,
 omdat CI een achtergebleven uitleg afkeurt.
-
-## Repo-instellingen (alleen beheerders)
-
-De trunk-based werkwijze hierboven berust op instellingen die eenmalig worden gezet. Daarvoor
-zijn admin-rechten op de repository nodig. De onderstaande commando's zetten ze alle.
-
-Alleen squashen bij het mergen, en de branch daarna opruimen:
-
-```bash
-gh api -X PATCH repos/MRDekeijzer/uwv-common-agentic \
-  -F allow_squash_merge=true \
-  -F allow_merge_commit=false \
-  -F allow_rebase_merge=false \
-  -F delete_branch_on_merge=true \
-  -f squash_merge_commit_title=PR_TITLE \
-  -f squash_merge_commit_message=PR_BODY
-```
-
-`main` beschermen, zodat wijzigingen alleen via een pull request binnenkomen, met een groene
-`validate` en één goedkeuring van een CODEOWNER:
-
-```bash
-gh api -X PUT repos/MRDekeijzer/uwv-common-agentic/branches/main/protection \
-  --input - <<'JSON'
-{
-  "required_status_checks": { "strict": true, "contexts": ["validate"] },
-  "required_pull_request_reviews": {
-    "required_approving_review_count": 1,
-    "require_code_owner_reviews": true,
-    "dismiss_stale_reviews": true
-  },
-  "enforce_admins": false,
-  "restrictions": null,
-  "allow_force_pushes": false,
-  "allow_deletions": false,
-  "required_linear_history": true
-}
-JSON
-```
-
-`enforce_admins` staat bewust op `false`. De registry heeft twee beheerders; met
-`enforce_admins: true` kan er niets meer worden gemerged zodra een van beiden afwezig is.
-`strict: true` betekent dat een branch bij moet zijn met `main` voordat er gemerged kan
-worden. Dat hoort bij trunk-based werken en is haalbaar zolang branches kort blijven.
-
-De instellingen controleren:
-
-```bash
-gh api repos/MRDekeijzer/uwv-common-agentic/branches/main/protection --jq '{
-  checks: .required_status_checks.contexts,
-  reviews: .required_pull_request_reviews.required_approving_review_count,
-  codeowners: .required_pull_request_reviews.require_code_owner_reviews
-}'
-```

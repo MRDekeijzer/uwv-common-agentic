@@ -4,10 +4,9 @@ description: A relentless interview to sharpen a plan or design. Invoked by the 
 disable-model-invocation: true
 metadata:
   use-case: Start op eigen initiatief een grilling-sessie met /grill-me; het model stelt dit nooit zelf voor.
-  owner: '@FrisoHarlaar'
+  owner: '@MRDekeijzer'
   status: supported
 ---
-
 # Grill me
 
 ## When to use
