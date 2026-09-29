@@ -2,9 +2,9 @@
 """Controleert skills/ tegen het registry-contract en werkt de catalogus in README.md bij.
 
 Gebruik:
-  python3 tools/validate_skills.py          # controleren (zoals CI; stopt met 1 bij problemen)
-  python3 tools/validate_skills.py --fix    # catalogus in README.md bijwerken
-  python3 tools/validate_skills.py --selftest
+  python3 scripts/validate_skills.py          # controleren (zoals CI; stopt met 1 bij problemen)
+  python3 scripts/validate_skills.py --fix    # catalogus in README.md bijwerken
+  python3 scripts/validate_skills.py --selftest
 """
 import re
 import sys
@@ -182,7 +182,7 @@ def main():
             README.write_text(updated)
             print("catalogus in README.md bijgewerkt")
     elif updated != text:
-        problems.append("catalogus in README.md is verouderd - draai: python3 tools/validate_skills.py --fix")
+        problems.append("catalogus in README.md is verouderd - draai: python3 scripts/validate_skills.py --fix")
     if problems:
         print(f"{len(problems)} probleem/problemen:\n" + "\n".join(f"  - {p}" for p in problems), file=sys.stderr)
         sys.exit(1)

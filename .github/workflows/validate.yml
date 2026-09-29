@@ -11,5 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python3 tools/validate_skills.py --selftest
-      - run: python3 tools/validate_skills.py
+      - run: python3 scripts/validate_skills.py --selftest
+      - run: python3 scripts/validate_skills.py
