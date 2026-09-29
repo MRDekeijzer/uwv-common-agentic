@@ -1,5 +1,7 @@
 # uwv-common-agentic
 
+[![skills.sh](https://skills.sh/b/MRDekeijzer/uwv-common-agentic)](https://skills.sh/MRDekeijzer/uwv-common-agentic)
+
 Een gedeelde registry van agent skills voor hergebruik en kennisdeling binnen het UWV.
 
 GitHub Copilot is het agent-harnas waarop deze registry zich richt. Skills zijn gewone
