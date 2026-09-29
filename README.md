@@ -27,7 +27,7 @@ Installeren zonder CLI is ook mogelijk. Een skill is een map: kopieer `skills/<n
 <!-- catalog:start -->
 | Skill | Waarvoor | Status |
 | --- | --- | --- |
-| [`create-pr-from-template`](skills/create-pr-from-template/SKILL.md) | Open een pull request op basis van het PR-sjabloon van de repository, gevuld met de commits op de huidige branch. | supported |
+| [`create-pr`](skills/create-pr/SKILL.md) | Open een draft pull request op basis van het PR-sjabloon van de repository, gevuld met de commits op de huidige branch. | supported |
 | [`grill-me`](skills/grill-me/SKILL.md) | Start op eigen initiatief een grilling-sessie met /grill-me; het model stelt dit nooit zelf voor. | supported |
 | [`grilling`](skills/grilling/SKILL.md) | Bevraag een plan of ontwerp kritisch voordat het gebouwd wordt, met één vraag per keer. | supported |
 <!-- catalog:end -->
@@ -37,10 +37,9 @@ aangepast. Wanneer een skill moet aanslaan, staat per skill beschreven in `docs/
 
 ## Bijdragen
 
-Een bijdrage bestaat uit één skill per pull request. Aan vijf eisen moet zijn voldaan: er
-bestaat nog geen skill die dit doet, de use case is beschreven, je benoemt voor welke projecten
-de skill van pas komt, de verplichte secties staan in de `SKILL.md`, en er is een Nederlandse
-uitleg in `docs/<naam>.md`.
+Een bijdrage bestaat uit één skill per pull request. Aan vier eisen moet zijn voldaan: er
+bestaat nog geen skill die dit doet, de use case is beschreven, de verplichte secties staan in
+de `SKILL.md`, en er is een Nederlandse uitleg in `docs/<naam>.md`.
 
 Lees [CONTRIBUTING.md](CONTRIBUTING.md) en voer daarna uit:
 

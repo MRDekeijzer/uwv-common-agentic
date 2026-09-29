@@ -4,7 +4,6 @@ description: A relentless interview to sharpen a plan or design. Invoked by the 
 disable-model-invocation: true
 metadata:
   use-case: Start op eigen initiatief een grilling-sessie met /grill-me; het model stelt dit nooit zelf voor.
-  projects: [elk-project, architectuurbesluiten, plan-review]
   owner: '@FrisoHarlaar'
   status: supported
 ---

@@ -1,27 +1,15 @@
 # grilling
 
-Bevraag een plan of ontwerp kritisch voordat het gebouwd wordt, met één vraag per keer.
+Gebruik deze skill voordat je iets bouwt waarvan de vorm nog ter discussie staat: een plan, een
+ontwerp, een specificatie of een architectuurbesluit dat nog niet is getoetst. De agent bevraagt
+je punt voor punt en werkt de beslisboom af, waarbij hij afhankelijkheden tussen beslissingen
+één voor één oplost. Hij stelt één vraag per keer en wacht op je antwoord, en geeft bij elke
+vraag zijn eigen voorkeursantwoord. Feiten die hij zelf kan opzoeken zoekt hij op in plaats van
+ze te vragen; de beslissingen blijven aan jou. Pas nadat je bevestigt dat jullie hetzelfde beeld
+hebben, gaat hij tot uitvoering over.
 
-## Wanneer gebruiken
-
-- Voordat je iets bouwt waarvan de vorm nog ter discussie staat.
-- Bij een plan, ontwerp, specificatie of architectuurbesluit dat nog niet is getoetst.
-- Je vraagt de agent om je plan onder druk te zetten of er gaten in te zoeken.
-
-## Wanneer niet gebruiken
-
-- Het werk is al besloten en je wilt het laten bouwen. Doorvragen houdt de uitvoering dan op.
-- Bij een enkele feitelijke vraag met één juist antwoord. Zoek dat antwoord op.
-- Wanneer de agent zelf iets moet beslissen. De skill legt jouw beslissingen bloot en geeft
-  geen eigen oordeel terug als vraag.
-
-## Wat de skill doet
-
-De agent bevraagt het plan punt voor punt en werkt de beslisboom af, waarbij afhankelijkheden
-tussen beslissingen één voor één worden opgelost. Bij elke vraag geeft hij zijn eigen
-voorkeursantwoord.
-
-De vragen komen één per keer, en de agent wacht op je antwoord voordat hij verdergaat.
-Feiten die hij zelf kan opzoeken in de omgeving, bijvoorbeeld in het bestandssysteem, zoekt
-hij op in plaats van ze te vragen. De beslissingen blijven aan jou. De agent gaat pas tot
-uitvoering over nadat je hebt bevestigd dat jullie hetzelfde beeld hebben.
+De skill is niet bedoeld voor werk dat al besloten is, want doorvragen houdt de uitvoering dan
+alleen op, en niet voor een enkele feitelijke vraag met één juist antwoord. Wil je zelf een
+sessie starten zonder te wachten tot de agent het voorstelt, gebruik dan
+[`grill-me`](grill-me.md). Staat het plan wel vast en is het werk gedaan, dan is
+[`create-pr`](create-pr.md) de volgende stap.

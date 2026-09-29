@@ -17,9 +17,9 @@ README = ROOT / "README.md"
 DOCS = ROOT / "docs"
 START, END = "<!-- catalog:start -->", "<!-- catalog:end -->"
 
-REQUIRED_META = ("use-case", "projects", "owner", "status")
+REQUIRED_META = ("use-case", "owner", "status")
 REQUIRED_HEADINGS = ("## When to use", "## When not to use")
-REQUIRED_DOC_HEADINGS = ("## Wanneer gebruiken", "## Wanneer niet gebruiken")
+MIN_DOC_CHARS = 200
 STATUSES = {"experimental", "supported", "deprecated"}
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 EMPTY_CATALOG = "_Nog geen skills._"
@@ -86,8 +86,6 @@ def check_skill(path):
     for key in REQUIRED_META:
         if not meta.get(key):
             problems.append(f"metadata.{key} is verplicht en mag niet leeg zijn")
-    if meta.get("projects") and not isinstance(meta["projects"], list):
-        problems.append("metadata.projects moet een lijst op één regel zijn, bijv. [python, data-pipelines]")
     if meta.get("status") and meta["status"] not in STATUSES:
         problems.append(f"metadata.status moet een van {sorted(STATUSES)} zijn")
 
@@ -101,10 +99,9 @@ def check_doc(path, name):
     """Return [problems] for the Dutch docs/<name>.md that belongs to a skill."""
     if not path.is_file():
         return [f"docs/{name}.md ontbreekt; elke skill heeft een Nederlandse uitleg in docs/"]
-    text = path.read_text()
-    return [f"docs/{name}.md: verplichte sectie '{h}' ontbreekt"
-            for h in REQUIRED_DOC_HEADINGS
-            if not re.search(rf"^{re.escape(h)}\s*$", text, re.M)]
+    if len(path.read_text().strip()) < MIN_DOC_CHARS:
+        return [f"docs/{name}.md is korter dan {MIN_DOC_CHARS} tekens; schrijf een of twee alinea's"]
+    return []
 
 
 def collect():
@@ -148,10 +145,10 @@ def apply_catalog(text, catalog):
 
 def selftest():
     front, body = parse_frontmatter(
-        "---\nname: a-b\ndescription: x\nmetadata:\n  projects: [p, q]\n  owner: '@me'\n---\n## When to use\n"
+        "---\nname: a-b\ndescription: x\nmetadata:\n  tags: [p, q]\n  owner: '@me'\n---\n## When to use\n"
     )
     assert front["name"] == "a-b", front
-    assert front["metadata"]["projects"] == ["p", "q"], front
+    assert front["metadata"]["tags"] == ["p", "q"], front
     assert front["metadata"]["owner"] == "@me", front
     assert body.strip() == "## When to use", body
     for bad in ("no frontmatter", "---\nname: a\n", "---\nnot-a-mapping\n---\n",
@@ -164,9 +161,9 @@ def selftest():
             raise AssertionError(f"had afgewezen moeten worden: {bad!r}")
     assert check_doc(Path("nergens/x.md"), "x") == ["docs/x.md ontbreekt; elke skill heeft een Nederlandse uitleg in docs/"]
     assert render_catalog([]) == EMPTY_CATALOG
-    one = render_catalog([("s", "d", {"use-case": "Doet iets.", "projects": ["alleen-hier"], "status": "supported"})])
+    one = render_catalog([("s", "d", {"use-case": "Doet iets.", "status": "supported"})])
     assert one.splitlines()[0].count("|") == 4, one          # Skill | Waarvoor | Status
-    assert "alleen-hier" not in one, one                     # projects staan niet in de catalogus
+    assert one.splitlines()[-1].endswith("| Doet iets. | supported |"), one
     assert apply_catalog(f"a{START}old{END}b", "new") == f"a{START}\nnew\n{END}b"
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -175,7 +172,7 @@ def selftest():
         bad.write_text("---\nname: wrong-name\ndescription: short\nmetadata:\n  owner: x\n---\n\n# Bad\n")
         problems = check_skill(bad)[3]
         for expect in ("gelijk zijn aan de mapnaam", "description moet", "use-case",
-                       "projects", "status", "When to use", "When not to use"):
+                       "status", "When to use", "When not to use"):
             assert any(expect in p for p in problems), (expect, problems)
 
         good = Path(tmp) / "good-skill" / "SKILL.md"
@@ -183,15 +180,15 @@ def selftest():
         good.write_text(
             "---\nname: good-skill\n"
             "description: Use when you need a fixture that satisfies every rule this validator enforces.\n"
-            "metadata:\n  use-case: Bewijst het gelukkige pad.\n  projects: [a, b]\n"
+            "metadata:\n  use-case: Bewijst het gelukkige pad.\n"
             "  owner: '@me'\n  status: supported\n---\n\n## When to use\nx\n\n## When not to use\ny\n"
         )
         assert check_skill(good)[3] == [], check_skill(good)[3]
 
         doc = Path(tmp) / "good-skill.md"
-        doc.write_text("# good-skill\n\n## Wanneer gebruiken\nx\n")
-        assert [p for p in check_doc(doc, "good-skill") if "Wanneer niet gebruiken" in p]
-        doc.write_text("# good-skill\n\n## Wanneer gebruiken\nx\n\n## Wanneer niet gebruiken\ny\n")
+        doc.write_text("# good-skill\n\nte kort\n")
+        assert [p for p in check_doc(doc, "good-skill") if "korter dan" in p]
+        doc.write_text("# good-skill\n\n" + "een zinnige alinea. " * 20)
         assert check_doc(doc, "good-skill") == [], check_doc(doc, "good-skill")
     print("zelftest ok")
 

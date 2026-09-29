@@ -12,9 +12,9 @@ De `SKILL.md` mag Engels zijn, omdat dat voor het model doorgaans beter werkt. D
 `docs/` is Nederlands, conform UWV-beleid. Die uitleg beschrijft wanneer een collega de skill
 moet gebruiken; de `SKILL.md` beschrijft wanneer de agent hem moet laden.
 
-## De vijf eisen
+## De vier eisen
 
-Een pull request wordt alleen gemerged wanneer aan alle vijf de eisen is voldaan. Het
+Een pull request wordt alleen gemerged wanneer aan alle vier de eisen is voldaan. Het
 PR-sjabloon vraagt hier in dezelfde volgorde naar.
 
 ### 1. Er bestaat nog geen skill die dit doet
@@ -33,6 +33,9 @@ Dekt een bestaande skill je geval al voor ongeveer 80 procent af, verbeter dan d
 pull request die een bestaande `SKILL.md` aanpast is sneller te reviewen en voor gebruikers
 beter dan een duplicaat.
 
+Is de skill alleen voor jou van waarde en niet voor een tweede project, bewaar hem dan in je
+eigen `~/.agents/skills/` in plaats van in deze registry.
+
 ### 2. De use case is duidelijk en staat opgeschreven
 
 `metadata.use-case` is één zin in de vorm `<doe wat> wanneer <situatie>`. Deze zin komt
@@ -44,14 +47,7 @@ ziet op het moment dat hij besluit jouw skill te laden. Formuleer het als een tr
 plaats van als een samenvatting, en gebruik de woorden die een gebruiker daadwerkelijk zou
 typen. De minimumlengte is 40 tekens; kortere waarden wijst de validator af.
 
-### 3. Je benoemt voor welke projecten de skill van pas komt
-
-`metadata.projects` is een niet-lege lijst met concrete contexten, bijvoorbeeld
-`[python-backends, azure-data-pipelines, react-frontends]`. Zijn er geen twee te noemen, dan
-is de skill vermoedelijk persoonlijk in plaats van gemeenschappelijk. Bewaar hem in dat geval
-in je eigen `~/.agents/skills/`.
-
-### 4. De verplichte secties staan in de SKILL.md
+### 3. De verplichte secties staan in de SKILL.md
 
 Twee secties zijn verplicht en worden door CI gecontroleerd:
 
@@ -62,17 +58,18 @@ Twee secties zijn verplicht en worden door CI gecontroleerd:
 De koppen zijn Engels omdat een skill zelf Engels mag zijn; de tekst eronder mag Nederlands
 zijn.
 
-### 5. Er is een Nederlandse uitleg in docs/
+### 4. Er is een Nederlandse uitleg in docs/
 
 Bij elke skill hoort een `docs/<naam>.md` met dezelfde naam als de map in `skills/`. De map
-`docs/` is daarmee een spiegel van `skills/`. CI controleert dat het bestand bestaat, dat er
-geen uitleg achterblijft zonder skill, en dat twee secties aanwezig zijn:
+`docs/` is daarmee een spiegel van `skills/`. CI controleert dat het bestand bestaat, dat het
+niet zo goed als leeg is, en dat er geen uitleg achterblijft zonder skill.
 
-- `## Wanneer gebruiken`: de situaties waarin een collega deze skill pakt.
-- `## Wanneer niet gebruiken`: de gevallen waarin iets anders beter past, met een verwijzing
-  naar dat alternatief.
+Schrijf een of twee alinea's, geen vertaling van de `SKILL.md`. Beschrijf in welke situatie een
+collega deze skill pakt en hoe hij zich verhoudt tot de andere skills in de registry: welke
+skill je in plaats hiervan gebruikt, of welke erop volgt. Die verwijzingen maken de registry
+navigeerbaar wanneer er vijftig skills in staan.
 
-Deze uitleg is bedoeld voor iemand die de skill nog nooit heeft gebruikt en de `SKILL.md` niet
+De uitleg is bedoeld voor iemand die de skill nog nooit heeft gebruikt en de `SKILL.md` niet
 gaat lezen. Schrijf hem daarom in het Nederlands en zonder termen die alleen binnen jouw team
 gangbaar zijn.
 
@@ -84,7 +81,6 @@ name: mijn-skill                    # gelijk aan de mapnaam, kebab-case
 description: Use when <situatie> to <resultaat>. Covers <woorden die een gebruiker typt>.
 metadata:
   use-case: Eén zin voor de catalogus in de README.
-  projects: [python-backends, azure-data-pipelines]
   owner: '@je-github-handle'        # wie verantwoordelijk is voor onderhoud
   status: experimental              # experimental | supported | deprecated
 ---
@@ -103,22 +99,6 @@ Stappen, commando's, voorbeelden.
 
 `npx skills init <naam>` genereert een startsjabloon; vul dat aan met het `metadata:`-blok.
 
-## Het docs-contract
-
-```markdown
-# mijn-skill
-
-Eén regel over wat de skill doet.
-
-## Wanneer gebruiken
-...
-
-## Wanneer niet gebruiken
-...
-
-## Wat de skill doet
-Wat de agent achtereenvolgens doet, en wat hij aan de gebruiker vraagt.
-```
 
 ## Indeling van een bijdrage
 
@@ -126,7 +106,7 @@ Wat de agent achtereenvolgens doet, en wat hij aan de gebruiker vraagt.
 skills/mijn-skill/
   SKILL.md        # frontmatter, When to use, When not to use, How it works
   <overig>        # scripts, templates, naslag; wordt samen met de skill geïnstalleerd
-docs/mijn-skill.md  # Nederlandse uitleg, Wanneer gebruiken, Wanneer niet gebruiken
+docs/mijn-skill.md  # Nederlandse uitleg in een of twee alinea's
 ```
 
 Alles wat de skill verder nodig heeft, zoals scripts, naslag en templates, plaats je in
@@ -167,7 +147,7 @@ python3 scripts/validate_skills.py         # moet 0 teruggeven; dezelfde control
 ```
 
 De validator controleert de mechanische regels: naamgeving, verplichte metadata, verplichte
-secties in `SKILL.md` en in `docs/<naam>.md`, en een actuele catalogus. De review gaat daarmee
+secties in `SKILL.md`, de aanwezigheid van `docs/<naam>.md`, en een actuele catalogus. De review gaat daarmee
 alleen nog over de inhoudelijke afweging, namelijk of dit een duplicaat is en of de use case
 reëel is.
 
@@ -182,8 +162,8 @@ op `supported` zodra de skill in een echt project is gebruikt. Dat is het moment
 verhelpen wat dat eerste gebruik aan het licht heeft gebracht.
 
 Voor uitfaseren geldt: zet `status: deprecated`, beschrijf in `## When not to use` en in
-`## Wanneer niet gebruiken` welk alternatief gebruikt moet worden, en laat de skill nog een
-kwartaal staan voordat je hem verwijdert. Verwijder bij het opruimen ook `docs/<naam>.md`,
+`docs/<naam>.md` welk alternatief gebruikt moet worden, en laat de skill nog een kwartaal staan
+voordat je hem verwijdert. Verwijder bij het opruimen ook `docs/<naam>.md`,
 omdat CI een achtergebleven uitleg afkeurt.
 
 ## Repo-instellingen (alleen beheerders)

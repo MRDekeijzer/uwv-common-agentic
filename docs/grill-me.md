@@ -1,19 +1,11 @@
 # grill-me
 
-Start op eigen initiatief een grilling-sessie; het model stelt dit nooit zelf voor.
+Gebruik deze skill wanneer je zelf een grilling-sessie wilt beginnen. Dat is de enige manier
+waarop zo'n sessie start: de skill is zo ingesteld dat de agent hem niet op eigen initiatief
+kan aanroepen. Ziet de agent dat een plan tegenspraak kan gebruiken, dan zegt hij dat en wacht
+hij tot jij hem aanroept. Zo blijft de keuze om je eigen plan onder druk te laten zetten bij
+jou.
 
-## Wanneer gebruiken
-
-- Je wilt zelf een plan of ontwerp kritisch laten bevragen en roept de skill daarvoor aan.
-
-## Wanneer niet gebruiken
-
-- Op initiatief van het model. De skill is zo ingesteld dat het model hem niet zelf kan
-  aanroepen. Ziet de agent dat een plan tegenspraak kan gebruiken, dan zegt hij dat en wacht
-  hij tot jij de sessie start.
-- Voor het bevragen zelf. Dat staat in [`grilling`](grilling.md); deze skill start het alleen.
-
-## Wat de skill doet
-
-De skill start een grilling-sessie. De inhoud van die sessie staat beschreven in de
-documentatie van `grilling`.
+De skill doet niets anders dan de sessie starten. Wat er daarna gebeurt, en wanneer dat wel en
+niet zinvol is, staat in [`grilling`](grilling.md). Lees die uitleg als je wilt weten of dit
+het juiste moment is.
