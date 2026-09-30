@@ -27,9 +27,8 @@ MARKETPLACE = ROOT / ".github" / "plugin" / "marketplace.json"
 THIRD_PARTY = "## Aanbevolen skills van derden"
 START, END = "<!-- catalog:start -->", "<!-- catalog:end -->"
 
-REQUIRED_META = ("use-case", "owner", "status")
+REQUIRED_META = ("use-case",)
 MIN_DESC_CHARS = 40
-STATUSES = {"experimental", "supported", "deprecated"}
 EMPTY_CATALOG = "_Nog geen skills._"
 FRONTMATTER = re.compile(r"\A---\n(.*?)\n---", re.S)
 
@@ -51,8 +50,6 @@ def check_skill(path):
     for key in REQUIRED_META:
         if not meta.get(key):
             problems.append(f"metadata.{key} is verplicht en mag niet leeg zijn")
-    if meta.get("status") and meta["status"] not in STATUSES:
-        problems.append(f"metadata.status moet een van {sorted(STATUSES)} zijn")
     return meta, problems
 
 
@@ -103,8 +100,8 @@ def check_marketplace(readme, market):
 def render_catalog(skills):
     if not skills:
         return EMPTY_CATALOG
-    rows = ["| Skill | Waarvoor | Status |", "| --- | --- | --- |"]
-    rows += [f"| [`{n}`](skills/{n}/SKILL.md) | {m['use-case']} | {m['status']} |" for n, m in skills]
+    rows = ["| Skill | Waarvoor |", "| --- | --- |"]
+    rows += [f"| [`{n}`](skills/{n}/SKILL.md) | {m['use-case']} |" for n, m in skills]
     return "\n".join(rows)
 
 
@@ -119,21 +116,21 @@ def apply_catalog(text, catalog):
 def selftest():
     with tempfile.TemporaryDirectory() as tmp:
         bad = Path(tmp) / "SKILL.md"
-        bad.write_text("---\nname: x\ndescription: short\nmetadata:\n  owner: x\n---\n\n# Bad\n")
+        bad.write_text("---\nname: x\ndescription: short\nmetadata:\n  other: x\n---\n\n# Bad\n")
         problems = check_skill(bad)[1]
-        for expect in ("description moet", "use-case", "status"):
+        for expect in ("description moet", "use-case"):
             assert any(expect in p for p in problems), (expect, problems)
 
         # Block scalars and quoted values are plain YAML, so they must pass.
         bad.write_text(
             "---\nname: good-skill\ndescription: >\n  Use when you need a fixture that satisfies\n"
             "  every rule this validator enforces.\nmetadata:\n  use-case: Bewijst het gelukkige pad.\n"
-            "  owner: '@me'\n  status: supported\n---\n\nInstructies zonder vaste koppen.\n"
+            "---\n\nInstructies zonder vaste koppen.\n"
         )
         meta, problems = check_skill(bad)
-        assert problems == [] and meta["owner"] == "@me", problems
-    one = render_catalog([("s", {"use-case": "Doet iets.", "status": "supported"})])
-    assert one.splitlines()[-1] == "| [`s`](skills/s/SKILL.md) | Doet iets. | supported |", one
+        assert problems == [] and meta["use-case"] == "Bewijst het gelukkige pad.", problems
+    one = render_catalog([("s", {"use-case": "Doet iets."})])
+    assert one.splitlines()[-1] == "| [`s`](skills/s/SKILL.md) | Doet iets. |", one
     assert apply_catalog(f"a{START}old{END}b", "new") == f"a{START}\nnew\n{END}b"
 
     readme = f"{THIRD_PARTY}\n\n| Skill | Bron | Plugin |\n| --- | --- | --- |\n| `a` | x | `src` | `gh skill install o/r a --pin {'f' * 40}` |\n\n## Verder\n"

@@ -17,7 +17,6 @@
 ### Updaten
 
 - [ ] Wat er verandert en waarom: ...
-- [ ] De owner (`metadata.owner`) reviewt mee, of ik ben zelf de owner
 - [ ] `python3 scripts/validate_skills.py` geeft 'ok'
 
 ### Verwijderen

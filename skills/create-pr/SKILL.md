@@ -5,8 +5,6 @@ license: MIT
 compatibility: Requires git and either the GitHub CLI (gh) or the VS Code GitHub Pull Requests extension.
 metadata:
   use-case: Open een draft pull request op basis van het PR-template van de repository, gevuld met de commits op de huidige branch.
-  owner: '@MRDekeijzer'
-  status: experimental
 ---
 # Create PR from Repository Template
 

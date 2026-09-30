@@ -8,23 +8,20 @@ skill toe, werkt er één bij of haalt er één weg.
 ### Eigen skill
 
 Skills volgen de [Agent Skills-specificatie](https://agentskills.io/specification), dus ze werken
-in vrijwel elk agent-harnas, ook in GitHub Copilot. De specificatie legt ook uit hoe je een goede
+in vrijwel elk agent-harnas, waaronder GitHub Copilot. De specificatie legt ook uit hoe je een goede
 skill schrijft.
 
 Je hebt minimaal `skills/<naam>/SKILL.md` nodig, met de [frontmatter](#frontmatter) en de
 instructies voor de agent. Scripts, templates en naslag zet je ernaast in `skills/<naam>/`; ze
 worden samen met de skill geïnstalleerd.
 
-We mergen een skill als:
+Om de kwaliteit van de registry te waarborgen kijken we bij contributies naar:
 
 1. Geen bestaande skill hetzelfde doet, ook niet buiten het UWV. Kijk in de catalogus in de
    [README](README.md) en zoek met `gh skill search <trefwoord>`. Bestaat er al een goede skill
    van derden, [beveel die dan aan](#skill-van-derden). Een eigen kopie loopt achter zodra de
    maker iets verbetert.
-2. Het doel duidelijk is. `metadata.use-case` is één Nederlandse zin in de vorm
-   `<doe wat> wanneer <situatie>` en komt in de catalogus. Aan de `description` ziet de agent of
-   hij de skill moet laden, dus beschrijf wanneer de skill nodig is, met de woorden die een
-   gebruiker typt (minstens 40 tekens).
+2. Het doel van de skill duidelijk is. Een concrete zin in de `metadata.use-case` in de vorm `<doe wat> wanneer <situatie>` helpt ons en je collega's en komt in de catalogus te staan. Aan de `description` ziet de agent of hij de skill moet laden, dus beschrijf wanneer de skill nodig is, met de woorden die een gebruiker typt (minstens 40 tekens).
 3. Collega's er ook iets aan hebben. Gebruik je hem alleen zelf, zet hem dan in je eigen
    `~/.agents/skills/`.
 
@@ -33,9 +30,9 @@ We mergen een skill als:
 1. Voeg een regel toe aan "Aanbevolen skills van derden" in de [README](README.md). Zeg in de
    kolom "Waarom" in één zin wat de skill doet en wanneer hij nuttig is.
 2. Zet de skill in [`marketplace.json`](.github/plugin/marketplace.json). Elke bronrepository is
-   daar één plugin, genoemd naar de eigenaar, met `"strict": false` en de volledige commit-SHA in
-   `source`. Staat de bron er al, voeg dan alleen het pad toe aan `skills` van die plugin. Zet de
-   pluginnaam in de kolom "Plugin".
+   daar één plugin, genoemd naar de eigenaar van de repo. Zet voor het waarborgen van de veiligheid `"strict": false` en vul de commit-SHA in
+   `source` in. Staat de bronrepository er al als plugin bij, voeg dan alleen het pad toe aan `skills` van die plugin. Zet de
+   pluginnaam in de kolom "Plugin" in de [README](README.md).
 
 De aanbeveling moet hieraan voldoen:
 
@@ -57,13 +54,10 @@ CI controleert of de README-tabel en `marketplace.json` dezelfde skills op dezel
 
 ### Eigen skill
 
-Bijwerken: pas `skills/<naam>/` aan en draai de [checks](#checks). Is de skill niet van jou, vraag
-dan de owner uit `metadata.owner` om review. Zet `status` op `supported` zodra de skill in echte
-projecten werkt.
+Bijwerken: pas `skills/<naam>/` aan en draai de [checks](#checks).
 
 Verwijderen: haal `skills/<naam>/` weg en draai `validate_skills.py --fix`, zodat de skill uit de
-catalogus verdwijnt. Wil je gebruikers eerst waarschuwen, zet dan in een eerdere pull request
-`status: deprecated`.
+catalogus verdwijnt.
 
 ### Skill van derden
 
@@ -84,8 +78,6 @@ description: Use when <situatie> to <resultaat>. Covers <woorden die een gebruik
 license: MIT
 metadata:
   use-case: Eén zin voor de catalogus in de README.
-  owner: '@jouw-github-naam'
-  status: experimental              # experimental, supported of deprecated
 ---
 
 Instructies...
