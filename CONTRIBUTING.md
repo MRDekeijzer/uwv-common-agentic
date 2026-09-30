@@ -2,6 +2,10 @@
 
 Je kunt een eigen skill toevoegen of een skill van derden aanbevelen.
 
+> [!WARNING]
+> Deze registry staat in een openbare repository, dus iedereen kan de skills lezen. Zet er geen
+> gevoelige of interne UWV-informatie in.
+
 ## Een skill toevoegen
 
 ### Eigen skill
@@ -36,12 +40,22 @@ Om de kwaliteit van de registry te waarborgen, letten we er bij de review op dat
 
 Mocht je een Skill van iemand anders gebruiken, kan je hem ook aanbevelen. Dat kan als volgt:
 
-1. Voeg een regel toe aan "Aanbevolen skills van derden" in de [README](README.md). Zeg in de
-   kolom "Waarom" in één zin wat de skill doet en wanneer hij nuttig is.
-2. Zet de skill in [`marketplace.json`](.github/plugin/marketplace.json). Elke bronrepository is
-   daar één plugin, genoemd naar de eigenaar van de repo. Vul in `source` de volledige commit-SHA in; die pin zorgt dat iedereen precies de versie krijgt die wij hebben gelezen. Zet `"strict": false`, omdat de bron meestal geen eigen `plugin.json` heeft: de lijst `skills` in `marketplace.json` bepaalt dan welke skills de plugin bevat. Staat de bronrepository er al als plugin bij, voeg dan alleen het pad toe aan `skills` van die plugin. Zet de pluginnaam in de kolom "Plugin" in de [README](README.md).
+1. Lees en pin de Skill op een specifieke commit
+    ```bash
+    gh api repos/<eigenaar>/<repo>/commits/main --jq .sha    # laatste commit
+    gh skill preview <eigenaar>/<repo> <skill>@<sha>         # lees de skill op die commit
+    ```
+2. Voeg een regel toe aan "Aanbevolen skills van derden" in de [README](README.md). 
+    - Zet in de kolom "Waarom" in één zin wat de skill doet en wanneer hij nuttig is.
+    - Zet in de kolom "Plugin" de naam van de bronrepository
+    - Zet in de kolom "Installeren" het specifieke installeer commando: `gh skill install <eigenaar>/<repo> <skill> --pin <sha>`
+3. Zet de skill in [`marketplace.json`](.github/plugin/marketplace.json). 
+    - Elke bronrepository is daar één plugin, genoemd naar de eigenaar van de repo. 
+    - Vul in `source` de volledige commit-SHA in; die pin zorgt dat iedereen precies de versie krijgt die wij hebben gelezen. 
+    - Zet `"strict": false`, omdat de bron meestal geen eigen `plugin.json` heeft: de lijst `skills` in `marketplace.json` bepaalt dan welke skills de plugin bevat. Staat de bronrepository er al als plugin bij, voeg dan alleen het pad toe aan `skills` van die plugin.
+4. Run de [checks](#checks). Deze controleren of de catalogus in de [README](README.md) en `marketplace.json` dezelfde skills op dezelfde SHA noemen.
 
-De aanbeveling moet hieraan voldoen:
+Om de kwaliteit van de registry te waarborgen, letten we bij de review op de volgende punten:
 
 - Geen UWV-skill of eerdere aanbeveling dekt dit al af.
 - Je hebt de skill minstens eenmaal zelf gebruikt.
@@ -49,34 +63,26 @@ De aanbeveling moet hieraan voldoen:
 - De bron is een onderhouden repository van een bekende maker, geen willekeurige fork, en je hebt
   `SKILL.md` en eventuele scripts gelezen op de commit die je pint.
 
-```bash
-gh api repos/<eigenaar>/<repo>/commits/main --jq .sha    # laatste commit
-gh skill preview <eigenaar>/<repo> <skill>@<sha>         # lees de skill op die commit
-gh skill install <eigenaar>/<repo> <skill> --pin <sha>   # voor de kolom "Installeren"
-```
-
-CI controleert of de README-tabel en `marketplace.json` dezelfde skills op dezelfde SHA noemen.
-
 ## Een skill bijwerken of verwijderen
 
 ### Eigen skill
 
-Bijwerken: pas `skills/<naam>/` aan en draai de [checks](#checks).
+**Bijwerken:** pas `skills/<naam>/` aan en draai de [checks](#checks).
 
-Verwijderen: haal `skills/<naam>/` weg en draai de [checks](#checks), zodat de skill uit de
+**Verwijderen:** haal `skills/<naam>/` weg en draai de [checks](#checks), zodat de skill uit de
 catalogus verdwijnt.
 
 ### Skill van derden
 
-Bijwerken: lees eerst wat de maker veranderde, op
+**Bijwerken:** lees eerst wat de maker veranderde, op
 `https://github.com/<eigenaar>/<repo>/compare/<oude-sha>...<nieuwe-sha>`. Zet daarna de nieuwe SHA
 in `source` in `marketplace.json` en in de link en `--pin` in de README. De SHA geldt voor alle
 skills van die plugin, dus lees ook de wijzigingen in de andere skills.
 
-Verwijderen: stopt de maker met onderhoud of werkt de skill niet meer, haal dan de regel uit de
+**Verwijderen:** stopt de maker met onderhoud of werkt de skill niet meer naar behoren, haal dan de regel uit de
 README en het pad uit `marketplace.json`. Een plugin zonder skills haal je helemaal weg.
 
-## Frontmatter
+## Frontmatter template
 
 ```markdown
 ---
@@ -94,7 +100,7 @@ Voorbeelden staan in `skills/`.
 
 ## Checks
 
-Draai deze voordat je een pull request opent. CI draait dezelfde checks.
+Draai deze voordat je een pull request opent. 
 
 ```bash
 gh skill publish --dry-run           # Agent Skills-specificatie (GitHub CLI 2.90+)

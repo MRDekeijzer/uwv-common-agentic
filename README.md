@@ -4,9 +4,9 @@ Centrale registry voor gedeelde Skills binnen het UWV.
 
 ## Wat is een Skill?
 
-Een Skill is een instructie die een AI-agent kan inladen om extra context aan een vraag toe te voegen. Dit kan handmatig gebeuren of zodra een prompt erom vraagt. De invulling kan veel kanten op gaan. Het kan belangrijke informatie over een specifiek onderwerp geven, of aangeven welke stappen je zet voor een klus, bijvoorbeeld een pull request openen volgens het template van de repository. Je hoeft die uitleg dan niet in elke chat opnieuw te geven, en de agent doet het elke keer op dezelfde manier, zoals beschreven in de `SKILL.md`.
+Een Skill is een instructie die een AI-agent kan inladen om extra context aan een vraag toe te voegen. Dit kan handmatig gebeuren of zodra een prompt erom vraagt. De invulling van de instructies kan veel kanten op gaan. Het kan belangrijke informatie over een specifiek onderwerp geven, of aangeven welke stappen je zet voor een klus, bijvoorbeeld hoe de AI-agent een pull request moet openen volgens het template van de repository. Je hoeft die uitleg dan niet in elke chat opnieuw te geven, en de agent doet het elke keer op dezelfde manier, zoals beschreven in de `SKILL.md`.
 
-In deze registry delen we onze kennis en de skills die ons helpen, samen met skills van anderen die we aanraden, om elkaar te helpen en van elkaar te leren.
+In deze registry delen we onze kennis en de skills die ons helpen, om binnen UWV elkaar te helpen en van elkaar te leren.
 
 De skills volgen de [Agent Skills-specificatie](https://agentskills.io/specification), dus ze
 werken in vrijwel alle agent-harnassen, zoals GitHub Copilot. De documentatie is Nederlands, conform UWV-beleid.
@@ -27,18 +27,18 @@ Deze bevat meerdere plugins, zodat je bij het installeren makkelijk kan kiezen w
 
 Nieuwe versies van de UWV-skills haal je met één update-commando op. Skills van derden blijven op de gepinde commit staan tot een pull request de pin ophoogt.
 
-#### Copilot CLI
+#### Optie 1: Via de Copilot CLI
 
 Installeer de marketplace via de Copilot CLI:
 
 ```bash
 copilot plugin marketplace add MRDekeijzer/uwv-common-agentic
 copilot plugin install uwv-common@uwv
-copilot plugin install <plugin>@uwv    # optioneel: skills van derden
+copilot plugin install <plugin>@uwv    # optioneel, maar aangeraden: skills van derden
 copilot plugin update --all            # later: wijzigingen ophalen
 ```
 
-#### VS Code
+#### Optie 2: VS Code
 
 Voeg de marketplace toe aan je gebruikersinstellingen en installeer de plugins via de
 Plugins-pagina van de Agent Customizations-editor.
@@ -47,9 +47,9 @@ Plugins-pagina van de Agent Customizations-editor.
 "chat.plugins.marketplaces": ["MRDekeijzer/uwv-common-agentic"]
 ```
 
-#### Per project
+#### Optie 3: Per project
 
-Voor één project kan een team de marketplace ook in `.github/copilot/settings.json` van dat
+Voor één project kan een team de marketplace ook in `.github/copilot/settings.json` in de repo van dat
 project zetten, zodat iedereen die aan het project werkt de plugins aangeboden krijgt:
 
 ```json
