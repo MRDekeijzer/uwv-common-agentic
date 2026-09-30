@@ -1,30 +1,35 @@
 # uwv-common-agentic
 
-Skills die collega's binnen het UWV met elkaar delen.
+Centrale registry voor gedeelde Skills binnen het UWV.
 
-Een skill is een map met een `SKILL.md`: instructies die een AI-agent zoals GitHub Copilot laadt
-zodra een taak erom vraagt. Er staat in hoe je een klus aanpakt, bijvoorbeeld een pull request
-openen volgens het sjabloon van de repository. Je hoeft die uitleg dan niet in elke chat opnieuw
-te geven, en de agent doet het elke keer op dezelfde manier.
+## Wat is een Skill?
 
-Wat de een uitzoekt, heeft de ander vaak ook nodig. In deze registry delen we daarom onze kennis
-en de skills die ons helpen, samen met skills van buiten het UWV die we aanraden.
+Een Skill is een instructie die een AI-agent kan inladen om extra context aan een vraag toe te voegen. Dit kan handmatig gebeuren of zodra een prompt erom vraagt. De invulling kan veel kanten op gaan. Het kan belangrijke informatie over een specifiek onderwerp geven, of aangeven welke stappen je zet voor een klus, bijvoorbeeld een pull request openen volgens het template van de repository. Je hoeft die uitleg dan niet in elke chat opnieuw te geven, en de agent doet het elke keer op dezelfde manier, zoals beschreven in de `SKILL.md`.
+
+In deze registry delen we onze kennis en de skills die ons helpen, samen met skills van anderen die we aanraden, om elkaar te helpen en van elkaar te leren.
 
 De skills volgen de [Agent Skills-specificatie](https://agentskills.io/specification), dus ze
-werken ook in andere harnassen dan Copilot. De documentatie is Nederlands, conform UWV-beleid.
-Een `SKILL.md` mag Engels zijn, omdat het model daar meestal beter mee werkt.
+werken in vrijwel alle agent-harnassen, zoals GitHub Copilot. De documentatie is Nederlands, conform UWV-beleid.
+Een `SKILL.md` mag Engels zijn, omdat de AI-modellen daar meestal beter mee werken.
 
 ## Installeren
 
 ### Installeren via de plugin-marketplace (aangeraden)
 
 Deze repository is een plugin-marketplace voor o.a. GitHub Copilot
-([`.github/plugin/marketplace.json`](.github/plugin/marketplace.json)). De plugin `uwv-common` bevat alle UWV-skills uit deze
-repository. De [aanbevolen skills van derden](#aanbevolen-skills-van-derden) staan in één plugin
-per bron, vastgezet op een gecontroleerde commit; de kolom "Plugin" in die tabel zegt welke.
-Een nieuwere versie komt er pas na een pull request in.
+([`.github/plugin/marketplace.json`](.github/plugin/marketplace.json)).
 
-Copilot CLI:
+Deze bevat meerdere plugins, zodat je bij het installeren makkelijk kan kiezen wat je wel en niet wilt gebruiken.
+
+- De plugin `uwv-common` bevat alle zelfgemaakte UWV-skills uit deze
+  repository.
+- De [aanbevolen skills van derden](#aanbevolen-skills-van-derden) staan in een losse plugin per bron. De kolom "Plugin" in die [catalogus](#aanbevolen-skills-van-derden) laat zien welke skills onder welke bron vallen.
+
+Nieuwe versies van de UWV-skills haal je met één update-commando op. Skills van derden blijven op de gepinde commit staan tot een pull request de pin ophoogt.
+
+#### Copilot CLI
+
+Installeer de marketplace via de Copilot CLI:
 
 ```bash
 copilot plugin marketplace add MRDekeijzer/uwv-common-agentic
@@ -33,15 +38,19 @@ copilot plugin install <plugin>@uwv    # optioneel: skills van derden
 copilot plugin update --all            # later: wijzigingen ophalen
 ```
 
-VS Code: voeg de marketplace toe aan je gebruikersinstellingen en installeer de plugins via de
+#### VS Code
+
+Voeg de marketplace toe aan je gebruikersinstellingen en installeer de plugins via de
 Plugins-pagina van de Agent Customizations-editor.
 
 ```json
 "chat.plugins.marketplaces": ["MRDekeijzer/uwv-common-agentic"]
 ```
 
+#### Per project
+
 Voor één project kan een team de marketplace ook in `.github/copilot/settings.json` van dat
-project zetten, zodat iedereen die er werkt de plugins aangeboden krijgt:
+project zetten, zodat iedereen die aan het project werkt de plugins aangeboden krijgt:
 
 ```json
 {
@@ -53,7 +62,9 @@ project zetten, zodat iedereen die er werkt de plugins aangeboden krijgt:
 ```
 
 <details>
-<summary>Installeren via de Github CLI</summary>
+<summary>Installeren via de GitHub CLI (afgeraden)</summary>
+
+> Installeren kan ook via de GitHub CLI. Dat raden we af, omdat je dan zelf updates moet bijhouden.
 
 Je hebt de [GitHub CLI](https://cli.github.com/) 2.90 of nieuwer nodig.
 
@@ -63,18 +74,19 @@ gh skill install MRDekeijzer/uwv-common-agentic create-pr --scope user   # voor 
 gh skill install MRDekeijzer/uwv-common-agentic --all          # alle UWV-skills
 ```
 
-Zonder `--agent` installeert `gh skill` voor GitHub Copilot. Met `gh skill update` haal je latere
-wijzigingen op. `gh` gebruikt je `gh auth login`, dus een private repository werkt zonder apart
-token.
+Met `gh skill update` haal je latere wijzigingen op.
 
 </details>
 
 <details>
 <summary>Handmatig kopiëren (afgeraden)</summary>
 
-Zonder CLI kan het ook. Een skill is een map: kopieer `skills/<naam>/` naar `~/.copilot/skills/`
-of `~/.agents/skills/` voor al je projecten, of naar `.github/skills/` of `.agents/skills/` voor
-één project.
+> Installeren kan ook zonder marketplace of GitHub CLI. Dat raden we af, omdat je dan zelf updates moet bijhouden.
+
+Een Skill is in de basis een map. Zo installeer je een skill handmatig:
+
+- Globaal gebruik: kopieer `skills/<naam>/` uit deze repo naar `~/.copilot/skills/` of `~/.agents/skills/` om de skill in al je projecten te kunnen gebruiken.
+- Voor een specifiek project: kopieer `skills/<naam>/` uit deze repo naar `.github/skills/` of `.agents/skills/` in dat project.
 
 </details>
 
@@ -82,11 +94,13 @@ of `~/.agents/skills/` voor al je projecten, of naar `.github/skills/` of `.agen
 
 Deze skills zijn binnen het UWV gemaakt en worden in deze repository onderhouden.
 
+<!-- prettier-ignore-start -->
 <!-- catalog:start -->
 | Skill | Waarvoor |
 | --- | --- |
 | [`create-pr`](skills/create-pr/SKILL.md) | Open een draft pull request op basis van het PR-template van de repository, gevuld met de commits op de huidige branch. |
 <!-- catalog:end -->
+<!-- prettier-ignore-end -->
 
 `scripts/validate_skills.py` genereert deze tabel, dus pas hem niet met de hand aan.
 
@@ -95,10 +109,12 @@ Deze skills zijn binnen het UWV gemaakt en worden in deze repository onderhouden
 Deze skills komen van buiten het UWV. Ze staan niet in deze repository: je installeert ze uit
 de bron, vastgezet op een commit die wij hebben bekeken.
 
+<!-- prettier-ignore-start -->
 | Skill | Bron | Plugin | Waarom | Installeren |
 | --- | --- | --- | --- | --- |
 | `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grilling) | `mattpocock` | Bevraagt je plan of ontwerp kritisch, zodat je de gaten vindt voordat er code is. | `gh skill install mattpocock/skills grilling --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
 | `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grill-me) | `mattpocock` | Start een grilling-sessie alleen als jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `gh skill install mattpocock/skills grill-me --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
+<!-- prettier-ignore-end -->
 
 ## Bijdragen
 
