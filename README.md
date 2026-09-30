@@ -2,15 +2,13 @@
 
 [![skills.sh](https://skills.sh/b/MRDekeijzer/uwv-common-agentic)](https://skills.sh/MRDekeijzer/uwv-common-agentic)
 
-Een gedeelde registry van agent skills voor hergebruik en kennisdeling binnen het UWV.
+Agent skills die collega's binnen het UWV met elkaar delen.
 
-GitHub Copilot is het agent-harnas waarop deze registry zich richt. Skills zijn gewone
-`SKILL.md`-bestanden volgens de [agent skills](https://skills.sh)-conventie en werken daardoor
-ook in andere harnassen.
+De skills zijn geschreven voor GitHub Copilot. Het zijn gewone `SKILL.md`-bestanden volgens de
+[agent skills](https://skills.sh)-conventie, dus ze werken ook in andere harnassen.
 
-De documentatie in deze repository is Nederlands, conform UWV-beleid. De inhoud van een
-`SKILL.md` mag Engels zijn, omdat dat voor het model doorgaans beter werkt. De Nederlandse
-uitleg voor collega's staat per skill in [`docs/`](docs/).
+De documentatie is Nederlands, conform UWV-beleid. Een `SKILL.md` mag Engels zijn, omdat het
+model daar meestal beter mee werkt. Per skill staat een Nederlandse uitleg in [`docs/`](docs/).
 
 ## Installeren
 
@@ -18,15 +16,15 @@ uitleg voor collega's staat per skill in [`docs/`](docs/).
 npx skills add MRDekeijzer/uwv-common-agentic
 ```
 
-`npx skills update` haalt latere wijzigingen op. Toegang tot een private repository verloopt
-via je bestaande git- of `gh`-credentials; een apart token is niet nodig.
+Met `npx skills update` haal je latere wijzigingen op. Voor een private repository gebruikt de
+CLI je bestaande git- of `gh`-credentials; je hebt geen apart token nodig.
 
-Installeren zonder CLI is ook mogelijk. Een skill is een map: kopieer `skills/<naam>/` naar
-`~/.agents/skills/` voor alle projecten, of naar `.agents/skills/` voor één project.
+Zonder CLI kan het ook. Een skill is een map: kopieer `skills/<naam>/` naar `~/.agents/skills/`
+voor al je projecten, of naar `.agents/skills/` voor één project.
 
 ## UWV-skills
 
-Skills die binnen het UWV zijn gemaakt en in deze repository worden onderhouden.
+Deze skills zijn binnen het UWV gemaakt en worden in deze repository onderhouden.
 
 <!-- catalog:start -->
 | Skill | Waarvoor | Status |
@@ -34,30 +32,24 @@ Skills die binnen het UWV zijn gemaakt en in deze repository worden onderhouden.
 | [`create-pr`](skills/create-pr/SKILL.md) | Open een draft pull request op basis van het PR-template van de repository, gevuld met de commits op de huidige branch. | supported |
 <!-- catalog:end -->
 
-De tabel wordt gegenereerd door `scripts/validate_skills.py` en mag niet met de hand worden
-aangepast. Wanneer een skill moet aanslaan, staat per skill beschreven in `docs/<naam>.md`.
+`scripts/validate_skills.py` genereert deze tabel, dus pas hem niet met de hand aan.
 
 ## Aanbevolen skills van derden
 
-Skills van buiten het UWV die we aanraden. Ze staan niet in deze repository: je installeert ze
-rechtstreeks uit de bron, zodat `npx skills update` de wijzigingen van de maker ophaalt.
+Deze skills komen van buiten het UWV. Ze staan niet in deze repository: je installeert ze uit
+de bron, zodat `npx skills update` de wijzigingen van de maker ophaalt.
 
-> Deze skills worden door derden onderhouden; updates worden niet door UWV gecontroleerd.
+> Derden onderhouden deze skills. UWV controleert hun updates niet.
 
 | Skill | Bron | Waarom | Installeren |
 | --- | --- | --- | --- |
-| `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling) | Bevraagt een plan of ontwerp kritisch voordat het gebouwd wordt, zodat gaten boven water komen voordat er code is. | `npx skills add mattpocock/skills --skill grilling` |
-| `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) | Start een grilling-sessie alleen wanneer jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `npx skills add mattpocock/skills --skill grill-me` |
+| `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling) | Bevraagt je plan of ontwerp kritisch, zodat je de gaten vindt voordat er code is. | `npx skills add mattpocock/skills --skill grilling` |
+| `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) | Start een grilling-sessie alleen als jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `npx skills add mattpocock/skills --skill grill-me` |
 
 ## Bijdragen
 
-Een bijdrage is één skill per pull request: een eigen skill, of een aanbeveling van een skill
-van derden. Voor een eigen skill gelden vier eisen: er bestaat nog geen skill die dit doet, de
-use case is beschreven, de verplichte secties staan in de `SKILL.md`, en er is een Nederlandse
-uitleg in `docs/<naam>.md`. Een aanbeveling is één regel in de tabel hierboven; zie
-[CONTRIBUTING.md](CONTRIBUTING.md#een-skill-van-derden-aanbevelen).
-
-Lees [CONTRIBUTING.md](CONTRIBUTING.md) en voer daarna uit:
+Eén pull request voegt één eigen skill toe, of één regel aan de tabel met aanbevolen skills.
+[CONTRIBUTING.md](CONTRIBUTING.md) beschrijft de eisen voor allebei. Voor een eigen skill:
 
 ```bash
 npx skills init mijn-skill                 # sjabloon (verplaats naar skills/mijn-skill/)
@@ -65,8 +57,8 @@ python3 scripts/validate_skills.py --fix   # catalogus bijwerken
 python3 scripts/validate_skills.py         # dezelfde controle als in CI
 ```
 
-Beheerders: [@MRDekeijzer](https://github.com/MRDekeijzer) en [@FrisoHarlaar](https://github.com/FrisoHarlaar). Beiden worden automatisch als reviewer
-toegevoegd aan elke pull request.
+[@MRDekeijzer](https://github.com/MRDekeijzer) en [@FrisoHarlaar](https://github.com/FrisoHarlaar)
+beheren de registry en worden automatisch als reviewer aan elke pull request toegevoegd.
 
 ## Licentie
 
