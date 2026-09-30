@@ -4,7 +4,7 @@
     "name": "UWV"
   },
   "metadata": {
-    "description": "Agent skills die collega's binnen het UWV met elkaar delen."
+    "description": "Skills die collega's binnen het UWV met elkaar delen."
   },
   "plugins": [
     {
@@ -21,7 +21,7 @@
       },
       "strict": false,
       "skills": ["./skills/productivity/grilling", "./skills/productivity/grill-me"],
-      "description": "Aanbevolen skills van derden uit mattpocock/skills (MIT), vastgezet op een gecontroleerde commit.",
+      "description": "Aanbevolen skills van derden uit mattpocock/skills (MIT), vastgezet op een commit sha.",
       "license": "MIT"
     }
   ]
