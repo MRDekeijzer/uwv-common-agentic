@@ -1,7 +1,6 @@
 # Bijdragen aan de registry
 
-Je kunt een eigen skill toevoegen of een skill van derden aanbevelen. Eén pull request voegt één
-skill toe, werkt er één bij of haalt er één weg.
+Je kunt een eigen skill toevoegen of een skill van derden aanbevelen.
 
 ## Een skill toevoegen
 
@@ -11,11 +10,19 @@ Skills volgen de [Agent Skills-specificatie](https://agentskills.io/specificatio
 in vrijwel elk agent-harnas, waaronder GitHub Copilot. De specificatie legt ook uit hoe je een goede
 skill schrijft.
 
-Je hebt minimaal `skills/<naam>/SKILL.md` nodig, met de [frontmatter](#frontmatter) en de
-instructies voor de agent. Scripts, templates en naslag zet je ernaast in `skills/<naam>/`; ze
-worden samen met de skill geïnstalleerd.
+#### Werkwijze 
 
-Om de kwaliteit van de registry te waarborgen kijken we bij contributies naar:
+> Gebruik [Conventional Commits](https://www.conventionalcommits.org/) voor branchnaam en PR-titel
+
+De stappen om een skill toe te voegen:
+
+1. Clone de repo en maak een branch vanaf `main`
+2. Schrijf de Skill
+   - Je hebt minimaal `skills/<naam>/SKILL.md` nodig, met de [frontmatter](#frontmatter) en de instructies voor de agent. Scripts, templates en naslag zet je indien nodig erbij in de folder `skills/<naam>/`.
+3. Run de [checks](#checks)
+4. Open een PR en doorloop de stappen in de PR-template
+
+Om de kwaliteit van de registry te waarborgen, letten we er bij de review op dat:
 
 1. Geen bestaande skill hetzelfde doet, ook niet buiten het UWV. Kijk in de catalogus in de
    [README](README.md) en zoek met `gh skill search <trefwoord>`. Bestaat er al een goede skill
@@ -27,12 +34,12 @@ Om de kwaliteit van de registry te waarborgen kijken we bij contributies naar:
 
 ### Skill van derden
 
+Mocht je een Skill van iemand anders gebruiken, kan je hem ook aanbevelen. Dat kan als volgt:
+
 1. Voeg een regel toe aan "Aanbevolen skills van derden" in de [README](README.md). Zeg in de
    kolom "Waarom" in één zin wat de skill doet en wanneer hij nuttig is.
 2. Zet de skill in [`marketplace.json`](.github/plugin/marketplace.json). Elke bronrepository is
-   daar één plugin, genoemd naar de eigenaar van de repo. Zet voor het waarborgen van de veiligheid `"strict": false` en vul de commit-SHA in
-   `source` in. Staat de bronrepository er al als plugin bij, voeg dan alleen het pad toe aan `skills` van die plugin. Zet de
-   pluginnaam in de kolom "Plugin" in de [README](README.md).
+   daar één plugin, genoemd naar de eigenaar van de repo. Vul in `source` de volledige commit-SHA in; die pin zorgt dat iedereen precies de versie krijgt die wij hebben gelezen. Zet `"strict": false`, omdat de bron meestal geen eigen `plugin.json` heeft: de lijst `skills` in `marketplace.json` bepaalt dan welke skills de plugin bevat. Staat de bronrepository er al als plugin bij, voeg dan alleen het pad toe aan `skills` van die plugin. Zet de pluginnaam in de kolom "Plugin" in de [README](README.md).
 
 De aanbeveling moet hieraan voldoen:
 
@@ -84,12 +91,6 @@ Instructies...
 ```
 
 Voorbeelden staan in `skills/`.
-
-## Werkwijze
-
-`main` is beschermd. Wijzigingen komen er via een pull request in en we squashen bij het mergen.
-Gebruik [Conventional Commits](https://www.conventionalcommits.org/) voor branchnamen en
-PR-titels.
 
 ## Checks
 
