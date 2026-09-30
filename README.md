@@ -29,7 +29,7 @@ Deze skills zijn binnen het UWV gemaakt en worden in deze repository onderhouden
 <!-- catalog:start -->
 | Skill | Waarvoor | Status |
 | --- | --- | --- |
-| [`create-pr`](skills/create-pr/SKILL.md) | Open een draft pull request op basis van het PR-template van de repository, gevuld met de commits op de huidige branch. | supported |
+| [`create-pr`](skills/create-pr/SKILL.md) | Open een draft pull request op basis van het PR-template van de repository, gevuld met de commits op de huidige branch. | experimental |
 <!-- catalog:end -->
 
 `scripts/validate_skills.py` genereert deze tabel, dus pas hem niet met de hand aan.
@@ -53,7 +53,8 @@ Eén pull request voegt één eigen skill toe, of één regel aan de tabel met a
 
 ```bash
 npx skills init mijn-skill                 # sjabloon (verplaats naar skills/mijn-skill/)
-python3 scripts/validate_skills.py --fix   # catalogus bijwerken
+gh skill publish --dry-run                 # agentskills.io-spec
+python3 scripts/validate_skills.py --fix   # catalogus bijwerken (vereist pyyaml)
 python3 scripts/validate_skills.py         # dezelfde controle als in CI
 ```
 

@@ -98,6 +98,7 @@ Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit
 ---
 name: mijn-skill                    # gelijk aan de mapnaam, kebab-case
 description: Use when <situatie> to <resultaat>. Covers <woorden die een gebruiker typt>.
+license: MIT
 metadata:
   use-case: Eén zin voor de catalogus in de README.
   owner: '@je-github-handle'        # wie verantwoordelijk is voor onderhoud
@@ -156,12 +157,15 @@ is de titel van de pull request de commitregel in `main`, dus schrijf hem in die
 ## Voordat je de pull request opent
 
 ```bash
+python3 -m pip install pyyaml              # eenmalig
+gh skill publish --dry-run                 # agentskills.io-spec: naamgeving, mapnaam, verplichte velden
 python3 scripts/validate_skills.py --fix   # werkt de catalogus in de README bij
 python3 scripts/validate_skills.py         # moet 0 teruggeven; dezelfde controle als in CI
 ```
 
-De validator controleert naamgeving, verplichte metadata, de verplichte secties in `SKILL.md`,
-of `docs/<naam>.md` bestaat en of de catalogus actueel is. In de review hoeven we dan alleen
+`gh skill publish --dry-run` (GitHub CLI 2.90 of nieuwer) controleert de agentskills.io-spec. De
+validator controleert wat de registry daarbovenop eist: verplichte metadata, de verplichte secties
+in `SKILL.md`, of `docs/<naam>.md` bestaat en of de catalogus actueel is. In de review hoeven we dan alleen
 nog te beoordelen of de skill een duplicaat is en of de use case reëel is.
 
 ## Review
