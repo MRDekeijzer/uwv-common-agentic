@@ -27,6 +27,43 @@ Zonder CLI kan het ook. Een skill is een map: kopieer `skills/<naam>/` naar `~/.
 of `~/.agents/skills/` voor al je projecten, of naar `.github/skills/` of `.agents/skills/` voor
 één project.
 
+### Installeren via de Copilot plugin-marketplace
+
+Deze repository is ook een plugin-marketplace voor GitHub Copilot
+([`.github/plugin/marketplace.json`](.github/plugin/marketplace.json)). Daarvoor heb je geen
+toestemming van een beheerder nodig. De plugin `uwv-common` bevat alle UWV-skills uit deze
+repository. De [aanbevolen skills van derden](#aanbevolen-skills-van-derden) staan in één plugin
+per bron, vastgezet op een gecontroleerde commit; de kolom "Plugin" in die tabel zegt welke.
+Een nieuwere versie komt er pas na een pull request in.
+
+Copilot CLI:
+
+```bash
+copilot plugin marketplace add MRDekeijzer/uwv-common-agentic
+copilot plugin install uwv-common@uwv
+copilot plugin install <plugin>@uwv    # optioneel: skills van derden
+copilot plugin update --all            # later: wijzigingen ophalen
+```
+
+VS Code: voeg de marketplace toe aan je gebruikersinstellingen en installeer de plugins via de
+Plugins-pagina van de Agent Customizations-editor.
+
+```json
+"chat.plugins.marketplaces": ["MRDekeijzer/uwv-common-agentic"]
+```
+
+Voor één project kan een team de marketplace ook in `.github/copilot/settings.json` van dat
+project zetten, zodat iedereen die er werkt de plugins aangeboden krijgt:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "uwv": { "source": { "source": "github", "repo": "MRDekeijzer/uwv-common-agentic" } }
+  },
+  "enabledPlugins": { "uwv-common@uwv": true }
+}
+```
+
 ## UWV-skills
 
 Deze skills zijn binnen het UWV gemaakt en worden in deze repository onderhouden.
@@ -49,10 +86,10 @@ de bron, vastgezet op een commit die wij hebben bekeken.
 > versie komt er via een pull request die de pin ophoogt, nadat iemand de wijzigingen van de maker
 > heeft bekeken (`gh skill preview` of de compare-weergave op GitHub).
 
-| Skill | Bron | Waarom | Installeren |
-| --- | --- | --- | --- |
-| `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grilling) | Bevraagt je plan of ontwerp kritisch, zodat je de gaten vindt voordat er code is. | `gh skill install mattpocock/skills grilling --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
-| `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grill-me) | Start een grilling-sessie alleen als jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `gh skill install mattpocock/skills grill-me --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
+| Skill | Bron | Plugin | Waarom | Installeren |
+| --- | --- | --- | --- | --- |
+| `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grilling) | `mattpocock` | Bevraagt je plan of ontwerp kritisch, zodat je de gaten vindt voordat er code is. | `gh skill install mattpocock/skills grilling --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
+| `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grill-me) | `mattpocock` | Start een grilling-sessie alleen als jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `gh skill install mattpocock/skills grill-me --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
 
 ## Bijdragen
 

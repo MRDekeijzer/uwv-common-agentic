@@ -83,18 +83,32 @@ bekeken. We mergen een aanbeveling alleen als:
 4. de bronrepository een zichtbare open licentie heeft, zoals MIT of Apache-2.0;
 5. de bron een onderhouden repository van een bekende maker is, geen willekeurige fork. De
    reviewer leest de `SKILL.md` en eventuele scripts van de versie die je pint;
-6. het installatiecommando een commit-SHA pint met `--pin`, of een tag uit een immutable release.
+6. het installatiecommando een volledige commit-SHA pint met `--pin`.
 
 Zoek de laatste commit op met `gh api repos/<eigenaar>/<repo>/commits/main --jq .sha`, lees de
 skill op die commit met `gh skill preview <eigenaar>/<repo> <skill>@<sha>` en zet
 `gh skill install <eigenaar>/<repo> <skill> --pin <sha>` in de laatste kolom.
 
-Een nieuwere versie van de maker volgen doe je met een pull request die de SHA ophoogt. Bekijk
-eerst het verschil (`https://github.com/<eigenaar>/<repo>/compare/<oude-sha>...<nieuwe-sha>`);
+Een nieuwere versie van de maker volgen doe je met een pull request die de SHA ophoogt, in de
+tabel en in `marketplace.json` (zie hieronder). Bekijk eerst het verschil (`https://github.com/<eigenaar>/<repo>/compare/<oude-sha>...<nieuwe-sha>`);
 de reviewer leest dat verschil mee. Vul in de pull request het deel "Aanbeveling" van het
 PR-sjabloon in en verwijder het deel "Eigen skill".
 
-Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit de tabel.
+Zet de skill ook in [`.github/plugin/marketplace.json`](.github/plugin/marketplace.json). Elke
+bronrepository is daar één plugin, genoemd naar de eigenaar (`mattpocock`), met `"strict": false`
+en in `source` de volledige commit-SHA die de reviewer heeft gelezen:
+
+- Staat de bron er al in, voeg dan alleen het pad van de skill toe aan `skills` van die plugin.
+  Heb je een nieuwere commit nodig, dan geldt de nieuwe SHA voor alle skills van die plugin; de
+  reviewer bekijkt dan ook wat er in de andere skills veranderde.
+- Is de bron nieuw, voeg dan een plugin toe.
+
+Zet de pluginnaam in de kolom "Plugin" van de tabel. CI controleert dat de tabel en
+`marketplace.json` dezelfde skills noemen, dat elke plugin van derden op een volledige commit-SHA
+staat en dat het `--pin` in de tabel dezelfde SHA is.
+
+Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit de tabel en het
+pad uit `marketplace.json`; een plugin zonder skills haal je helemaal weg.
 
 ## Het SKILL.md-contract
 
