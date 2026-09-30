@@ -1,9 +1,10 @@
 <!-- Titel in conventional-commit vorm, bijvoorbeeld "feat: skill voor alembic-migraties".
      Die titel wordt na het squashen de commitregel in main.
 
-     Voor het toevoegen van een skill: vul de vier eisen hieronder in. Voor een andere
-     wijziging (fix, docs, chore): verwijder de vier eisen en beschrijf wat er verandert.
-     Zie CONTRIBUTING.md. -->
+     Voor het toevoegen van een eigen skill: vul de vier eisen hieronder in en verwijder
+     "Aanbeveling". Voor het aanbevelen van een skill van derden: vul alleen "Aanbeveling" in
+     en verwijder de rest. Voor een andere wijziging (fix, docs, chore): verwijder beide en
+     beschrijf wat er verandert. Zie CONTRIBUTING.md. -->
 
 ## 1. Geen duplicaat
 
@@ -30,3 +31,13 @@ Waarom die skill dit geval niet afdekt:
 
 - [ ] `python3 scripts/validate_skills.py` geeft lokaal 'ok' terug
 - [ ] Ik heb deze skill minstens eenmaal in de praktijk gebruikt
+
+## Aanbeveling
+
+Bron: `<eigenaar>/<repo>`, skill `<naam>`
+
+- [ ] Geen UWV-skill en geen al aanbevolen skill dekt dit af
+- [ ] De kolom "Waarom" is één Nederlandse zin voor een collega die de skill niet kent
+- [ ] Ik heb deze skill minstens eenmaal in de praktijk gebruikt
+- [ ] De bronrepository heeft een open licentie (MIT, Apache-2.0 of vergelijkbaar)
+- [ ] De bron is een onderhouden repository van een bekende maker; `SKILL.md` en eventuele scripts zijn gelezen

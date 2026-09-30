@@ -9,7 +9,7 @@ request. De skill werkt uitsluitend met gecommitte wijzigingen, dus commit voord
 aanroept. Heeft de repository geen PR-sjabloon, of loopt de branch niet voor op de basisbranch,
 dan stopt de agent en zegt hij waarom, in plaats van zelf een indeling te bedenken.
 
-Deze skill is de tegenhanger van [`grilling`](grilling.md): grilling hoort aan het begin van
+Deze skill is de tegenhanger van [`grilling`](../README.md#aanbevolen-skills-van-derden): grilling hoort aan het begin van
 een branch, wanneer nog niet vaststaat wat je gaat bouwen, en `create-pr` hoort aan het eind,
 wanneer het gebouwd en gecommit is. De inhoud is overgenomen uit de skills-map van
 GAIT-kennisassistent-backend, zodat een pull request in beide repositories op dezelfde manier

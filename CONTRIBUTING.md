@@ -1,6 +1,7 @@
 # Bijdragen aan de registry
 
-Elke pull request voegt één skill toe en bestaat uit twee bestanden:
+Een pull request voegt één eigen skill toe of beveelt één skill van derden aan
+([zie hieronder](#een-skill-van-derden-aanbevelen)). Een eigen skill bestaat uit twee bestanden:
 
 - `skills/<naam>/SKILL.md`, met de frontmatter en de instructies die het agent-harnas leest.
 - `docs/<naam>.md`, met de Nederlandse uitleg voor collega's.
@@ -32,6 +33,10 @@ het dichtst bij je geval ligt, en licht in één zin toe waarom die het niet afd
 Dekt een bestaande skill je geval al voor ongeveer 80 procent af, verbeter dan die skill. Een
 pull request die een bestaande `SKILL.md` aanpast is sneller te reviewen en voor gebruikers
 beter dan een duplicaat.
+
+Dekt een skill van buiten het UWV je geval af, schrijf dan geen eigen versie maar
+[beveel hem aan](#een-skill-van-derden-aanbevelen). Een kopie loopt achter zodra de maker hem
+verbetert.
 
 Is de skill alleen voor jou van waarde en niet voor een ander project, bewaar hem dan in je
 eigen `~/.agents/skills/` in plaats van in deze registry.
@@ -70,6 +75,29 @@ navigeerbaar wanneer er vijftig skills in staan.
 
 De uitleg is bedoeld voor iemand die de skill nog nooit heeft gebruikt en de `SKILL.md` niet
 helemaal wilt gaan lezen. Schrijf hem daarom in het Nederlands en zonder termen die alleen binnen jouw team gangbaar zijn.
+
+## Een skill van derden aanbevelen
+
+Heb je buiten het UWV een skill gevonden die collega's zouden moeten gebruiken, dan kopieer je
+hem niet naar `skills/`. Je voegt één regel toe aan de tabel "Aanbevolen skills van derden" in
+[README.md](README.md). Dat kan rechtstreeks in de webeditor van GitHub. Collega's installeren
+de skill daarna uit de bron, en `npx skills update` haalt de verbeteringen van de maker op.
+
+Het nadeel is dat een latere versie niet door ons is bekeken. Een aanbeveling wordt daarom
+alleen gemerged wanneer aan deze vijf eisen is voldaan:
+
+1. **Geen duplicaat.** Geen UWV-skill en geen al aanbevolen skill dekt dit af.
+2. **Waarom, in het Nederlands.** Eén zin voor de kolom "Waarom", voor een collega die de skill niet kent.
+3. **Zelf gebruikt.** Je hebt de skill minstens eenmaal in de praktijk gebruikt.
+4. **Open licentie.** De bronrepository heeft een zichtbare open licentie, zoals MIT of Apache-2.0.
+5. **Betrouwbare bron.** Een onderhouden repository van een bekende maker, geen willekeurige fork.
+   De reviewer leest de `SKILL.md` en eventuele meegeleverde scripts van de huidige versie.
+
+Controleer met `npx skills add <eigenaar>/<repo> --list` dat de skillnaam klopt, en zet het
+installatiecommando in de laatste kolom. Vul in de pull request het deel "Aanbeveling" van het
+PR-sjabloon in en verwijder de vier eisen voor een eigen skill.
+
+Stopt de maker met onderhoud of werkt de skill niet meer, verwijder dan de regel uit de tabel.
 
 ## Het SKILL.md-contract
 
