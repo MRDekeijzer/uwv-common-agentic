@@ -1,8 +1,13 @@
 <!-- Titel in conventional-commit vorm, bijvoorbeeld "feat: add skill for alembic migrations".
      Na het squashen is dat de commitregel in main.
 
-     Houd het deel dat past en verwijder het andere. Bij een fix, docs of chore verwijder je
-     beide en beschrijf je wat er verandert. Zie CONTRIBUTING.md. -->
+     "Voor elke pull request" blijft altijd staan. Van de rest houd je het deel dat past; bij een
+     fix, docs of chore verwijder je dat en beschrijf je wat er verandert. Zie CONTRIBUTING.md. -->
+
+## Voor elke pull request
+
+- [ ] Er staat geen gevoelige of interne UWV-informatie in; deze repository is openbaar
+- [ ] `gh skill publish --dry-run` en `python3 scripts/validate_skills.py` slagen
 
 ## Eigen skill
 
@@ -12,17 +17,15 @@
 - [ ] Use case: <gelijk aan metadata.use-case>
 - [ ] `description` gebruikt de woorden die een gebruiker typt
 - [ ] Ik heb de skill minstens eenmaal zelf gebruikt
-- [ ] `python3 scripts/validate_skills.py` geeft 'ok'
 
 ### Updaten
 
 - [ ] Wat er verandert en waarom: ...
-- [ ] `python3 scripts/validate_skills.py` geeft 'ok'
 
 ### Verwijderen
 
 - [ ] Reden: ...
-- [ ] `skills/<naam>/` is weg en `python3 scripts/validate_skills.py` geeft 'ok'
+- [ ] `skills/<naam>/` is weg
 
 ## Third party skill aanbeveling
 
