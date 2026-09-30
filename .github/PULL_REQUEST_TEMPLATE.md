@@ -16,7 +16,14 @@
 
 ### Updaten
 
+- [ ] Wat er verandert en waarom: ...
+- [ ] De owner (`metadata.owner`) reviewt mee, of ik ben zelf de owner
+- [ ] `python3 scripts/validate_skills.py` geeft 'ok'
+
 ### Verwijderen
+
+- [ ] Reden: ...
+- [ ] `skills/<naam>/` is weg en de catalogus is bijgewerkt met `--fix`
 
 ## Third party skill aanbeveling
 
@@ -31,4 +38,11 @@
 
 ### Updaten
 
+- [ ] Ik heb het verschil gelezen: `https://github.com/<eigenaar>/<repo>/compare/<oude-sha>...<nieuwe-sha>`
+- [ ] De nieuwe SHA staat in `marketplace.json` en in de link en `--pin` in de README
+- [ ] Ik heb ook de wijzigingen in de andere skills van die plugin gelezen
+
 ### Verwijderen
+
+- [ ] Reden: ...
+- [ ] De regel is uit de README en het pad uit `marketplace.json`; een lege plugin is weg

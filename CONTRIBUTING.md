@@ -53,6 +53,28 @@ gh skill install <eigenaar>/<repo> <skill> --pin <sha>   # voor de kolom "Instal
 
 CI controleert of de README-tabel en `marketplace.json` dezelfde skills op dezelfde SHA noemen.
 
+## Een skill bijwerken of verwijderen
+
+### Eigen skill
+
+Bijwerken: pas `skills/<naam>/` aan en draai de [checks](#checks). Is de skill niet van jou, vraag
+dan de owner uit `metadata.owner` om review. Zet `status` op `supported` zodra de skill in echte
+projecten werkt.
+
+Verwijderen: haal `skills/<naam>/` weg en draai `validate_skills.py --fix`, zodat de skill uit de
+catalogus verdwijnt. Wil je gebruikers eerst waarschuwen, zet dan in een eerdere pull request
+`status: deprecated`.
+
+### Skill van derden
+
+Bijwerken: lees eerst wat de maker veranderde, op
+`https://github.com/<eigenaar>/<repo>/compare/<oude-sha>...<nieuwe-sha>`. Zet daarna de nieuwe SHA
+in `source` in `marketplace.json` en in de link en `--pin` in de README. De SHA geldt voor alle
+skills van die plugin, dus lees ook de wijzigingen in de andere skills.
+
+Verwijderen: stopt de maker met onderhoud of werkt de skill niet meer, haal dan de regel uit de
+README en het pad uit `marketplace.json`. Een plugin zonder skills haal je helemaal weg.
+
 ## Frontmatter
 
 ```markdown

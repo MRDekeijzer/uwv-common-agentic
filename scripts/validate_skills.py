@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Controleert de registry-eisen in skills/ en docs/ en werkt de catalogus in README.md bij.
+"""Controleert de registry-eisen in skills/ en werkt de catalogus in README.md bij.
 
 De agentskills.io-spec zelf (naamgeving, mapnaam, verplichte velden) controleert
 `gh skill publish --dry-run`; dit script doet alleen wat daar bovenop komt.
@@ -23,18 +23,15 @@ except ImportError:
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS = ROOT / "skills"
 README = ROOT / "README.md"
-DOCS = ROOT / "docs"
 MARKETPLACE = ROOT / ".github" / "plugin" / "marketplace.json"
 THIRD_PARTY = "## Aanbevolen skills van derden"
 START, END = "<!-- catalog:start -->", "<!-- catalog:end -->"
 
 REQUIRED_META = ("use-case", "owner", "status")
-REQUIRED_HEADINGS = ("## When to use", "## When not to use")
 MIN_DESC_CHARS = 40
-MIN_DOC_CHARS = 200
 STATUSES = {"experimental", "supported", "deprecated"}
 EMPTY_CATALOG = "_Nog geen skills._"
-FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n?(.*)", re.S)
+FRONTMATTER = re.compile(r"\A---\n(.*?)\n---", re.S)
 
 
 def check_skill(path):
@@ -46,7 +43,7 @@ def check_skill(path):
         front = yaml.safe_load(m.group(1)) or {}
     except yaml.YAMLError as e:
         return {}, [f"frontmatter is geen geldige YAML: {e}"]
-    body, problems = m.group(2), []
+    problems = []
 
     if len(str(front.get("description", ""))) < MIN_DESC_CHARS:
         problems.append(f"description moet minstens {MIN_DESC_CHARS} tekens zijn en zeggen WANNEER de skill nodig is")
@@ -56,25 +53,12 @@ def check_skill(path):
             problems.append(f"metadata.{key} is verplicht en mag niet leeg zijn")
     if meta.get("status") and meta["status"] not in STATUSES:
         problems.append(f"metadata.status moet een van {sorted(STATUSES)} zijn")
-    for heading in REQUIRED_HEADINGS:
-        if not re.search(rf"^{re.escape(heading)}\s*$", body, re.M):
-            problems.append(f"verplichte sectie '{heading}' ontbreekt in de tekst")
     return meta, problems
-
-
-def check_doc(path, name):
-    """Return [problems] for the Dutch docs/<name>.md that belongs to a skill."""
-    if not path.is_file():
-        return [f"docs/{name}.md ontbreekt; elke skill heeft een Nederlandse uitleg in docs/"]
-    if len(path.read_text().strip()) < MIN_DOC_CHARS:
-        return [f"docs/{name}.md is korter dan {MIN_DOC_CHARS} tekens; schrijf een of twee alinea's"]
-    return []
 
 
 def collect():
     skills, problems = [], []
     for d in sorted(p for p in SKILLS.iterdir() if p.is_dir() and not p.name.startswith(".")):
-        problems += check_doc(DOCS / f"{d.name}.md", d.name)
         f = d / "SKILL.md"
         if not f.is_file():
             problems.append(f"skills/{d.name}/: geen SKILL.md")
@@ -83,9 +67,6 @@ def collect():
         problems += [f"skills/{d.name}/SKILL.md: {e}" for e in errs]
         if not errs:
             skills.append((d.name, meta))
-    for doc in sorted(DOCS.glob("*.md")):
-        if not (SKILLS / doc.stem / "SKILL.md").is_file():
-            problems.append(f"docs/{doc.name} hoort bij geen skill in skills/")
     return skills, problems
 
 
@@ -140,21 +121,17 @@ def selftest():
         bad = Path(tmp) / "SKILL.md"
         bad.write_text("---\nname: x\ndescription: short\nmetadata:\n  owner: x\n---\n\n# Bad\n")
         problems = check_skill(bad)[1]
-        for expect in ("description moet", "use-case", "status", "When to use", "When not to use"):
+        for expect in ("description moet", "use-case", "status"):
             assert any(expect in p for p in problems), (expect, problems)
 
         # Block scalars and quoted values are plain YAML, so they must pass.
         bad.write_text(
             "---\nname: good-skill\ndescription: >\n  Use when you need a fixture that satisfies\n"
             "  every rule this validator enforces.\nmetadata:\n  use-case: Bewijst het gelukkige pad.\n"
-            "  owner: '@me'\n  status: supported\n---\n\n## When to use\nx\n\n## When not to use\ny\n"
+            "  owner: '@me'\n  status: supported\n---\n\nInstructies zonder vaste koppen.\n"
         )
         meta, problems = check_skill(bad)
         assert problems == [] and meta["owner"] == "@me", problems
-
-        doc = Path(tmp) / "good-skill.md"
-        doc.write_text("# good-skill\n\nte kort\n")
-        assert check_doc(doc, "good-skill"), "korte uitleg had afgewezen moeten worden"
     one = render_catalog([("s", {"use-case": "Doet iets.", "status": "supported"})])
     assert one.splitlines()[-1] == "| [`s`](skills/s/SKILL.md) | Doet iets. | supported |", one
     assert apply_catalog(f"a{START}old{END}b", "new") == f"a{START}\nnew\n{END}b"
