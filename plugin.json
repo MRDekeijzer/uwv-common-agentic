@@ -1,0 +1,8 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "uwv-common",
+  "version": "0.1.0",
+  "description": "Agent skills die collega's binnen het UWV met elkaar delen.",
+  "repository": "https://github.com/MRDekeijzer/uwv-common-agentic",
+  "license": "MIT"
+}

@@ -90,6 +90,11 @@ Controleer de skillnaam met `npx skills add <eigenaar>/<repo> --list` en zet het
 installatiecommando in de laatste kolom. Vul in de pull request het deel "Aanbeveling" van het
 PR-sjabloon in en verwijder het deel "Eigen skill".
 
+Zet de skill ook in [`.github/plugin/marketplace.json`](.github/plugin/marketplace.json): een
+plugin met `"strict": false`, de paden naar alleen die skill in `skills`, en in `source` de
+volledige commit-SHA die de reviewer heeft gelezen. Een nieuwere versie van de maker is een
+nieuwe pull request die alleen die SHA aanpast.
+
 Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit de tabel.
 
 ## Het SKILL.md-contract

@@ -22,6 +22,47 @@ CLI je bestaande git- of `gh`-credentials; je hebt geen apart token nodig.
 Zonder CLI kan het ook. Een skill is een map: kopieer `skills/<naam>/` naar `~/.agents/skills/`
 voor al je projecten, of naar `.agents/skills/` voor één project.
 
+### Installeren via de Copilot plugin-marketplace
+
+Deze repository is ook een plugin-marketplace voor GitHub Copilot
+([`.github/plugin/marketplace.json`](.github/plugin/marketplace.json)). Daarvoor heb je geen
+toestemming van een beheerder nodig. De marketplace bevat twee plugins:
+
+- `uwv-common`: alle UWV-skills uit deze repository.
+- `grilling`: de aanbevolen skills `grilling` en `grill-me` van derden, vastgezet op een
+  gecontroleerde commit. Een nieuwere versie komt er pas na een pull request in.
+
+Copilot CLI:
+
+```bash
+copilot plugin marketplace add MRDekeijzer/uwv-common-agentic
+copilot plugin install uwv-common@uwv
+copilot plugin install grilling@uwv    # optioneel
+copilot plugin update --all            # later: wijzigingen ophalen
+```
+
+VS Code: voeg de marketplace toe aan je gebruikersinstellingen en installeer de plugins via de
+Plugins-pagina van de Agent Customizations-editor.
+
+```json
+"chat.plugins.marketplaces": ["MRDekeijzer/uwv-common-agentic"]
+```
+
+Voor één project kan een team de marketplace ook in `.github/copilot/settings.json` van dat
+project zetten, zodat iedereen die er werkt de plugins aangeboden krijgt:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "uwv": { "source": { "source": "github", "repo": "MRDekeijzer/uwv-common-agentic" } }
+  },
+  "enabledPlugins": { "uwv-common@uwv": true }
+}
+```
+
+Een Copilot-beheerder kan dezelfde twee sleutels in de enterprise managed settings zetten; dan
+krijgt iedereen de plugins automatisch. Dat is optioneel, de stappen hierboven werken ook zonder.
+
 ## UWV-skills
 
 Deze skills zijn binnen het UWV gemaakt en worden in deze repository onderhouden.
