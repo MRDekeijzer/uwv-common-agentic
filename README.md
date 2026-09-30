@@ -26,18 +26,17 @@ voor al je projecten, of naar `.agents/skills/` voor één project.
 
 Deze repository is ook een plugin-marketplace voor GitHub Copilot
 ([`.github/plugin/marketplace.json`](.github/plugin/marketplace.json)). Daarvoor heb je geen
-toestemming van een beheerder nodig. De marketplace bevat twee plugins:
-
-- `uwv-common`: alle UWV-skills uit deze repository.
-- `grilling`: de aanbevolen skills `grilling` en `grill-me` van derden, vastgezet op een
-  gecontroleerde commit. Een nieuwere versie komt er pas na een pull request in.
+toestemming van een beheerder nodig. De plugin `uwv-common` bevat alle UWV-skills uit deze
+repository. De [aanbevolen skills van derden](#aanbevolen-skills-van-derden) staan in één plugin
+per bron, vastgezet op een gecontroleerde commit; de kolom "Plugin" in die tabel zegt welke.
+Een nieuwere versie komt er pas na een pull request in.
 
 Copilot CLI:
 
 ```bash
 copilot plugin marketplace add MRDekeijzer/uwv-common-agentic
 copilot plugin install uwv-common@uwv
-copilot plugin install grilling@uwv    # optioneel
+copilot plugin install <plugin>@uwv    # optioneel: skills van derden
 copilot plugin update --all            # later: wijzigingen ophalen
 ```
 
@@ -60,9 +59,6 @@ project zetten, zodat iedereen die er werkt de plugins aangeboden krijgt:
 }
 ```
 
-Een Copilot-beheerder kan dezelfde twee sleutels in de enterprise managed settings zetten; dan
-krijgt iedereen de plugins automatisch. Dat is optioneel, de stappen hierboven werken ook zonder.
-
 ## UWV-skills
 
 Deze skills zijn binnen het UWV gemaakt en worden in deze repository onderhouden.
@@ -82,10 +78,10 @@ de bron, zodat `npx skills update` de wijzigingen van de maker ophaalt.
 
 > Derden onderhouden deze skills. UWV controleert hun updates niet.
 
-| Skill | Bron | Waarom | Installeren |
-| --- | --- | --- | --- |
-| `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling) | Bevraagt je plan of ontwerp kritisch, zodat je de gaten vindt voordat er code is. | `npx skills add mattpocock/skills --skill grilling` |
-| `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) | Start een grilling-sessie alleen als jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `npx skills add mattpocock/skills --skill grill-me` |
+| Skill | Bron | Plugin | Waarom | Installeren |
+| --- | --- | --- | --- | --- |
+| `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling) | `mattpocock` | Bevraagt je plan of ontwerp kritisch, zodat je de gaten vindt voordat er code is. | `npx skills add mattpocock/skills --skill grilling` |
+| `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) | `mattpocock` | Start een grilling-sessie alleen als jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `npx skills add mattpocock/skills --skill grill-me` |
 
 ## Bijdragen
 

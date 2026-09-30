@@ -90,12 +90,21 @@ Controleer de skillnaam met `npx skills add <eigenaar>/<repo> --list` en zet het
 installatiecommando in de laatste kolom. Vul in de pull request het deel "Aanbeveling" van het
 PR-sjabloon in en verwijder het deel "Eigen skill".
 
-Zet de skill ook in [`.github/plugin/marketplace.json`](.github/plugin/marketplace.json): een
-plugin met `"strict": false`, de paden naar alleen die skill in `skills`, en in `source` de
-volledige commit-SHA die de reviewer heeft gelezen. Een nieuwere versie van de maker is een
-nieuwe pull request die alleen die SHA aanpast.
+Zet de skill ook in [`.github/plugin/marketplace.json`](.github/plugin/marketplace.json). Elke
+bronrepository is daar één plugin, genoemd naar de eigenaar (`mattpocock`), met `"strict": false`
+en in `source` de volledige commit-SHA die de reviewer heeft gelezen:
 
-Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit de tabel.
+- Staat de bron er al in, voeg dan alleen het pad van de skill toe aan `skills` van die plugin.
+  Heb je een nieuwere commit nodig, dan geldt de nieuwe SHA voor alle skills van die plugin; de
+  reviewer bekijkt dan ook wat er in de andere skills veranderde.
+- Is de bron nieuw, voeg dan een plugin toe.
+
+Zet de pluginnaam in de kolom "Plugin" van de tabel. CI controleert dat de tabel en
+`marketplace.json` dezelfde skills noemen en dat elke plugin van derden op een commit-SHA staat.
+Een nieuwere versie van de maker is een nieuwe pull request die alleen die SHA aanpast.
+
+Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit de tabel en het
+pad uit `marketplace.json`; een plugin zonder skills haal je helemaal weg.
 
 ## Het SKILL.md-contract
 

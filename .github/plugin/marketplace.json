@@ -13,7 +13,7 @@
       "description": "De UWV-skills uit deze repository."
     },
     {
-      "name": "grilling",
+      "name": "mattpocock",
       "source": {
         "source": "github",
         "repo": "mattpocock/skills",
@@ -21,7 +21,7 @@
       },
       "strict": false,
       "skills": ["./skills/productivity/grilling", "./skills/productivity/grill-me"],
-      "description": "Aanbevolen skills van derden: grilling en grill-me van Matt Pocock (MIT), vastgezet op een commit.",
+      "description": "Aanbevolen skills van derden uit mattpocock/skills (MIT), vastgezet op een gecontroleerde commit.",
       "license": "MIT"
     }
   ]
