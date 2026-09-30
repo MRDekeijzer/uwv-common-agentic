@@ -23,8 +23,8 @@ in het PR-sjabloon loopt ze langs.
 Controleer dit voordat je gaat schrijven:
 
 ```bash
-npx skills add MRDekeijzer/uwv-common-agentic --list   # wat deze registry al bevat
-npx skills find <trefwoord>                            # wat er buiten het UWV al bestaat
+gh skill install MRDekeijzer/uwv-common-agentic | cat   # wat deze registry al bevat
+gh skill search <trefwoord>                             # wat er buiten het UWV al bestaat
 ```
 
 Kijk ook in de tabellen in [README.md](README.md). Noem in je pull request de skill die het
@@ -37,7 +37,7 @@ voor hetzelfde.
 Dekt een skill van buiten het UWV je geval, [beveel hem dan aan](#een-skill-van-derden-aanbevelen)
 en schrijf geen eigen versie. Een kopie loopt achter zodra de maker iets verbetert.
 
-Heb alleen jij iets aan de skill, zet hem dan in je eigen `~/.agents/skills/`.
+Heb alleen jij iets aan de skill, zet hem dan in je eigen `~/.copilot/skills/`.
 
 ### 2. De use case staat opgeschreven
 
@@ -74,23 +74,41 @@ niet wil lezen, en gebruik geen termen die alleen in jouw team gangbaar zijn.
 
 Een goede skill van buiten het UWV kopieer je niet naar `skills/`. Je voegt één regel toe aan
 de tabel "Aanbevolen skills van derden" in [README.md](README.md); dat kan in de webeditor van
-GitHub. Collega's installeren de skill dan uit de bron, en `npx skills update` haalt de
-verbeteringen van de maker op.
-
-Latere versies heeft niemand van ons bekeken. We mergen een aanbeveling daarom alleen als:
+GitHub. Collega's installeren de skill dan uit de bron, vastgezet op de commit die wij hebben
+bekeken. We mergen een aanbeveling alleen als:
 
 1. geen UWV-skill en geen eerdere aanbeveling dit al afdekt;
 2. de kolom "Waarom" één Nederlandse zin is voor een collega die de skill niet kent;
 3. je de skill minstens eenmaal zelf hebt gebruikt;
 4. de bronrepository een zichtbare open licentie heeft, zoals MIT of Apache-2.0;
 5. de bron een onderhouden repository van een bekende maker is, geen willekeurige fork. De
-   reviewer leest de `SKILL.md` en eventuele scripts van de huidige versie.
+   reviewer leest de `SKILL.md` en eventuele scripts van de versie die je pint;
+6. het installatiecommando een volledige commit-SHA pint met `--pin`.
 
-Controleer de skillnaam met `npx skills add <eigenaar>/<repo> --list` en zet het
-installatiecommando in de laatste kolom. Vul in de pull request het deel "Aanbeveling" van het
+Zoek de laatste commit op met `gh api repos/<eigenaar>/<repo>/commits/main --jq .sha`, lees de
+skill op die commit met `gh skill preview <eigenaar>/<repo> <skill>@<sha>` en zet
+`gh skill install <eigenaar>/<repo> <skill> --pin <sha>` in de laatste kolom.
+
+Een nieuwere versie van de maker volgen doe je met een pull request die de SHA ophoogt, in de
+tabel en in `marketplace.json` (zie hieronder). Bekijk eerst het verschil (`https://github.com/<eigenaar>/<repo>/compare/<oude-sha>...<nieuwe-sha>`);
+de reviewer leest dat verschil mee. Vul in de pull request het deel "Aanbeveling" van het
 PR-sjabloon in en verwijder het deel "Eigen skill".
 
-Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit de tabel.
+Zet de skill ook in [`.github/plugin/marketplace.json`](.github/plugin/marketplace.json). Elke
+bronrepository is daar één plugin, genoemd naar de eigenaar (`mattpocock`), met `"strict": false`
+en in `source` de volledige commit-SHA die de reviewer heeft gelezen:
+
+- Staat de bron er al in, voeg dan alleen het pad van de skill toe aan `skills` van die plugin.
+  Heb je een nieuwere commit nodig, dan geldt de nieuwe SHA voor alle skills van die plugin; de
+  reviewer bekijkt dan ook wat er in de andere skills veranderde.
+- Is de bron nieuw, voeg dan een plugin toe.
+
+Zet de pluginnaam in de kolom "Plugin" van de tabel. CI controleert dat de tabel en
+`marketplace.json` dezelfde skills noemen, dat elke plugin van derden op een volledige commit-SHA
+staat en dat het `--pin` in de tabel dezelfde SHA is.
+
+Stopt de maker met onderhoud, of werkt de skill niet meer, haal de regel dan uit de tabel en het
+pad uit `marketplace.json`; een plugin zonder skills haal je helemaal weg.
 
 ## Het SKILL.md-contract
 
@@ -117,7 +135,7 @@ metadata:
 Stappen, commando's, voorbeelden.
 ```
 
-`npx skills init <naam>` maakt een startsjabloon; voeg daar het `metadata:`-blok aan toe.
+Begin met een kopie van `skills/create-pr/` of schrijf de skill vanuit dit contract.
 
 ## Indeling van een bijdrage
 
@@ -165,14 +183,18 @@ python3 scripts/validate_skills.py         # moet 0 teruggeven; dezelfde control
 
 `gh skill publish --dry-run` (GitHub CLI 2.90 of nieuwer) controleert de agentskills.io-spec. De
 validator controleert wat de registry daarbovenop eist: verplichte metadata, de verplichte secties
-in `SKILL.md`, of `docs/<naam>.md` bestaat en of de catalogus actueel is. In de review hoeven we dan alleen
-nog te beoordelen of de skill een duplicaat is en of de use case reëel is.
+in `SKILL.md`, of `docs/<naam>.md` bestaat en of de catalogus actueel is. In de review hoeven
+we dan alleen nog te beoordelen of de skill een duplicaat is en of de use case reëel is.
 
 ## Review
 
 `@MRDekeijzer` en `@FrisoHarlaar` beheren de registry en worden via CODEOWNERS automatisch als
 reviewer toegevoegd. Eén goedkeuring is genoeg om te mergen. We proberen binnen een week te
 reviewen.
+
+Na het mergen maakt een beheerder een release met `gh skill publish --tag vX.Y.Z` (semver). Zo
+kunnen collega's ook UWV-skills pinnen, bijvoorbeeld `gh skill install
+MRDekeijzer/uwv-common-agentic create-pr --pin v1.2.0`.
 
 Een nieuwe skill krijgt `status: experimental`. Heb je hem in een echt project gebruikt, zet de
 status dan in een volgende pull request op `supported` en herstel meteen wat dat gebruik aan

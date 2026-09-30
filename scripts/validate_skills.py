@@ -9,6 +9,7 @@ Gebruik:
   python3 scripts/validate_skills.py --fix    # catalogus in README.md bijwerken
   python3 scripts/validate_skills.py --selftest
 """
+import json
 import re
 import sys
 import tempfile
@@ -23,6 +24,8 @@ ROOT = Path(__file__).resolve().parent.parent
 SKILLS = ROOT / "skills"
 README = ROOT / "README.md"
 DOCS = ROOT / "docs"
+MARKETPLACE = ROOT / ".github" / "plugin" / "marketplace.json"
+THIRD_PARTY = "## Aanbevolen skills van derden"
 START, END = "<!-- catalog:start -->", "<!-- catalog:end -->"
 
 REQUIRED_META = ("use-case", "owner", "status")
@@ -86,6 +89,36 @@ def collect():
     return skills, problems
 
 
+# ponytail: splits cells on "|", so a literal pipe in a table cell breaks it.
+def third_party_rows(readme):
+    """{(plugin, skill, pinned sha)} from the third-party table in README.md."""
+    if THIRD_PARTY not in readme:
+        return set()
+    section = readme.split(THIRD_PARTY, 1)[1].split("\n## ", 1)[0]
+    rows = [[c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+            for line in section.splitlines() if line.startswith("|")]
+    if not rows:
+        return set()
+    plugin, skill = rows[0].index("Plugin"), rows[0].index("Skill")
+    pin = lambda r: (re.findall(r"--pin ([0-9a-f]+)", " ".join(r)) or [""])[0]
+    return {(r[plugin], r[skill], pin(r)) for r in rows[2:]}
+
+
+def check_marketplace(readme, market):
+    """Return [problems]: the README table and marketplace.json must list the same third-party skills at the same SHA."""
+    third = [p for p in market["plugins"] if p["source"] != "./"]
+    listed = {(p["name"], s.rstrip("/").rsplit("/", 1)[-1], p["source"].get("sha", ""))
+              for p in third for s in p.get("skills", [])}
+    table = third_party_rows(readme)
+    problems = [f"marketplace.json: plugin {p['name']!r} moet in source een volledige commit-SHA hebben"
+                for p in third if not re.fullmatch(r"[0-9a-f]{40}", str(p["source"].get("sha", "")))]
+    problems += [f"README noemt {s!r} (plugin {pl!r}, pin {sha[:7] or '-'}), maar marketplace.json niet"
+                 for pl, s, sha in sorted(table - listed)]
+    problems += [f"marketplace.json noemt {s!r} (plugin {pl!r}, sha {sha[:7] or '-'}), maar de README-tabel niet"
+                 for pl, s, sha in sorted(listed - table)]
+    return problems
+
+
 def render_catalog(skills):
     if not skills:
         return EMPTY_CATALOG
@@ -125,6 +158,14 @@ def selftest():
     one = render_catalog([("s", {"use-case": "Doet iets.", "status": "supported"})])
     assert one.splitlines()[-1] == "| [`s`](skills/s/SKILL.md) | Doet iets. | supported |", one
     assert apply_catalog(f"a{START}old{END}b", "new") == f"a{START}\nnew\n{END}b"
+
+    readme = f"{THIRD_PARTY}\n\n| Skill | Bron | Plugin |\n| --- | --- | --- |\n| `a` | x | `src` | `gh skill install o/r a --pin {'f' * 40}` |\n\n## Verder\n"
+    plugin = {"name": "src", "source": {"source": "github", "repo": "o/r", "sha": "f" * 40}, "skills": ["./skills/a"]}
+    assert check_marketplace(readme, {"plugins": [plugin]}) == []
+    plugin["source"].pop("sha")
+    plugin["skills"].append("./skills/b")
+    problems = check_marketplace(readme, {"plugins": [plugin]})
+    assert len(problems) == 4 and "SHA" in problems[0] and "pin fffffff" in problems[1], problems
     print("zelftest ok")
 
 
@@ -133,6 +174,7 @@ def main():
         return selftest()
     skills, problems = collect()
     text = README.read_text()
+    problems += check_marketplace(text, json.loads(MARKETPLACE.read_text()))
     updated = apply_catalog(text, render_catalog(skills))
     if "--fix" in sys.argv:
         if updated != text:
