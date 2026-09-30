@@ -17,6 +17,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
       - name: plugin manifests
         run: for f in plugin.json .github/plugin/marketplace.json; do python3 -m json.tool "$f" > /dev/null; done
-      - run: python3 -m pip install pyyaml
       - run: python3 scripts/validate_skills.py --selftest
-      - run: python3 scripts/validate_skills.py
+      - run: python3 scripts/validate_skills.py --check

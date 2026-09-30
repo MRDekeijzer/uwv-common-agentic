@@ -22,7 +22,7 @@
 ### Verwijderen
 
 - [ ] Reden: ...
-- [ ] `skills/<naam>/` is weg en de catalogus is bijgewerkt met `--fix`
+- [ ] `skills/<naam>/` is weg en `python3 scripts/validate_skills.py` geeft 'ok'
 
 ## Third party skill aanbeveling
 

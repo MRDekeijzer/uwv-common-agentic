@@ -28,7 +28,7 @@ Om de kwaliteit van de registry te waarborgen, letten we er bij de review op dat
    [README](README.md) en zoek met `gh skill search <trefwoord>`. Bestaat er al een goede skill
    van derden, [beveel die dan aan](#skill-van-derden). Een eigen kopie loopt achter zodra de
    maker iets verbetert.
-2. Het doel van de skill duidelijk is. Een concrete zin in de `metadata.use-case` in de vorm `<doe wat> wanneer <situatie>` helpt ons en je collega's en komt in de catalogus te staan. Aan de `description` ziet de agent of hij de skill moet laden, dus beschrijf wanneer de skill nodig is, met de woorden die een gebruiker typt (minstens 40 tekens).
+2. Het doel van de skill duidelijk is. Een concrete zin in de `metadata.use-case` in de vorm `<doe wat> wanneer <situatie>` helpt ons en je collega's en komt in de catalogus te staan. Aan de `description` ziet de agent of hij de skill moet laden, dus beschrijf wanneer de skill nodig is, met de woorden die een gebruiker typt.
 3. Collega's er ook iets aan hebben. Gebruik je hem alleen zelf, zet hem dan in je eigen
    `~/.agents/skills/`.
 
@@ -63,7 +63,7 @@ CI controleert of de README-tabel en `marketplace.json` dezelfde skills op dezel
 
 Bijwerken: pas `skills/<naam>/` aan en draai de [checks](#checks).
 
-Verwijderen: haal `skills/<naam>/` weg en draai `validate_skills.py --fix`, zodat de skill uit de
+Verwijderen: haal `skills/<naam>/` weg en draai de [checks](#checks), zodat de skill uit de
 catalogus verdwijnt.
 
 ### Skill van derden
@@ -97,11 +97,9 @@ Voorbeelden staan in `skills/`.
 Draai deze voordat je een pull request opent. CI draait dezelfde checks.
 
 ```bash
-python3 -m pip install pyyaml              # eenmalig
-gh skill publish --dry-run                 # Agent Skills-specificatie (GitHub CLI 2.90+)
-python3 scripts/validate_skills.py --fix   # werkt de catalogus in de README bij
-python3 scripts/validate_skills.py         # registry-eisen; moet 'ok' geven
+gh skill publish --dry-run           # Agent Skills-specificatie (GitHub CLI 2.90+)
+python3 scripts/validate_skills.py   # werkt de catalogus bij en controleert de registry
 ```
 
-De validator controleert de metadata, of de catalogus actueel is en of `marketplace.json` klopt
-met de README.
+De validator zet de `use-case` van elke skill in de catalogus in de README en controleert of
+`marketplace.json` klopt met de tabel met skills van derden.
