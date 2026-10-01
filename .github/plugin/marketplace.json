@@ -23,6 +23,18 @@
       "skills": ["./skills/productivity/grilling", "./skills/productivity/grill-me"],
       "description": "Aanbevolen skills van derden uit mattpocock/skills (MIT), vastgezet op een commit sha.",
       "license": "MIT"
+    },
+    {
+      "name": "dietrichgebert",
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail",
+        "sha": "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156"
+      },
+      "strict": false,
+      "skills": ["./skills/ponytail"],
+      "description": "Aanbevolen skills van derden uit DietrichGebert/ponytail (MIT), vastgezet op een commit sha.",
+      "license": "MIT"
     }
   ]
 }

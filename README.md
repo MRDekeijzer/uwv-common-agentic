@@ -114,6 +114,7 @@ de bron, vastgezet op een commit die wij hebben bekeken.
 | --- | --- | --- | --- | --- |
 | `grilling` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grilling) | `mattpocock` | Bevraagt je plan of ontwerp kritisch, zodat je de gaten vindt voordat er code is. | `gh skill install mattpocock/skills grilling --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
 | `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills/tree/d81f3a183412e71a5b1e84ca21bc1a35eea03a60/skills/productivity/grill-me) | `mattpocock` | Start een grilling-sessie alleen als jij `/grill-me` typt; de agent stelt het nooit zelf voor. Vereist `grilling`. | `gh skill install mattpocock/skills grill-me --pin d81f3a183412e71a5b1e84ca21bc1a35eea03a60` |
+| `ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156/skills/ponytail) | `dietrichgebert` | Laat de agent eerst nagaan of code nodig is en daarna de simpelste oplossing kiezen, met bestaande eigen helpers of utils vóór de standaard library, en de standaard library vóór nieuwe dependencies. | `gh skill install DietrichGebert/ponytail ponytail --pin e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156` |
 <!-- prettier-ignore-end -->
 
 ## Bijdragen
