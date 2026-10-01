@@ -8,6 +8,6 @@
 Install in Claude Code:
 
 ```
-/plugin marketplace add DietrichGebert/ponytail@e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156
+/plugin marketplace add https://github.com/DietrichGebert/ponytail.git#e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156
 /plugin install ponytail@ponytail
 ```
